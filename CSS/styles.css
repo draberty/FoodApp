@@ -1,4 +1,8 @@
 /* 1. LAYOUT & UTILITIES */
+:root {
+  color-scheme: dark;
+}
+
 main.container-fluid {
   padding-bottom: 3rem;
 }
