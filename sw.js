@@ -1,20 +1,19 @@
 const CACHE_NAME = 'meal-tracker-v1';
 
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
-  './assets/food-192.png',
-  './assets/food-512.png',
-  './CSS/styles.css',
-  './Libs/pico.indigo.min.css',
-  './Libs/dexie.min.js',
-  './JS/db.js',
-  './JS/main.js',
-  './JS/AddMeals.js',
-  './JS/chooseSides.js',
-  './JS/inventoryManager.js',
-  './JS/rendermeals.js'
+  'index.html',
+  'manifest.json',
+  'assets/food-192.png',
+  'assets/food-512.png',
+  'CSS/styles.css',
+  'Libs/pico.indigo.min.css',
+  'Libs/dexie.min.js',
+  'JS/db.js',
+  'JS/main.js',
+  'JS/AddMeals.js',
+  'JS/chooseSides.js',
+  'JS/inventoryManager.js',
+  'JS/rendermeals.js'
 ];
 
 // Install Event
@@ -28,7 +27,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate Event:
+// Activate Event
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
