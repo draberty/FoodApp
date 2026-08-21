@@ -5,6 +5,7 @@ const ASSETS_TO_CACHE = [
   './index.html',
   './manifest.json',
   './CSS/styles.css',
+  './Libs/pico-main/css/pico.indigo.min.css',
   './Libs/dexie.min.js',
   './JS/db.js',
   './JS/main.js',
