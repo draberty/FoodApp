@@ -4,8 +4,10 @@ const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
+  './assets/icon-192.png',
+  './assets/icon-512.png',
   './CSS/styles.css',
-  './Libs/pico-main/css/pico.indigo.min.css',
+  './Libs/pico.indigo.min.css',
   './Libs/dexie.min.js',
   './JS/db.js',
   './JS/main.js',
@@ -26,7 +28,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate Event: Cleans up old caches if you update CACHE_NAME
+// Activate Event:
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -48,7 +50,7 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
