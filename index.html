@@ -1,8 +1,7 @@
 <!doctype html>
-<html lang="en">
-	<head>
-	<head>
-        <meta charset="utf-8" data-theme="dark" />
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="color-scheme" content="dark" />
         <meta name="theme-color" content="#13171f" />
@@ -11,138 +10,137 @@
         <link rel="stylesheet" href="./CSS/styles.css" />
         <title>Food Prep Menu</title>
     </head>
-	</head>
-	<body>
-		<main class="container-fluid">
-			<section id="MenuView">
-				<hgroup>
-					<h1>What are you feeling today?</h1>
-					<p>Select a menu option below:</p>
-				</hgroup>
+    <body>
+        <main class="container-fluid">
+            <section id="MenuView">
+                <hgroup>
+                    <h1>What are you feeling today?</h1>
+                    <p>Select a menu option below:</p>
+                </hgroup>
 
-				<div class="grid">
-					<div role="button" class="Action" data-categories="Morning">
-						Morning
-					</div>
-					<div role="button" class="Action" data-categories="Afternoon">
-						Afternoon
-					</div>
-					<div role="button" class="Action" data-categories="Snacky">
-						Snacky
-					</div>
-					<div role="button" class="Action" data-categories="Dessert">
-						Dessert
-					</div>
-				</div>
-			</section>
+                <div class="grid">
+                    <div role="button" class="Action" data-categories="Morning">
+                        Morning
+                    </div>
+                    <div role="button" class="Action" data-categories="Afternoon">
+                        Afternoon
+                    </div>
+                    <div role="button" class="Action" data-categories="Snacky">
+                        Snacky
+                    </div>
+                    <div role="button" class="Action" data-categories="Dessert">
+                        Dessert
+                    </div>
+                </div>
+            </section>
 
-			<!-- This section displays the selected meal options -->
-			<!-- It is hidden by default -->
-			<section id="MealView" hidden>
-				<hgroup>
-					<h1 id="MealCatTitle">Category</h1>
-					<p id="MealCatDescription">Description</p>
-				</hgroup>
+            <!-- This section displays the selected meal options -->
+            <!-- It is hidden by default -->
+            <section id="MealView" hidden>
+                <hgroup>
+                    <h1 id="MealCatTitle">Category</h1>
+                    <p id="MealCatDescription">Description</p>
+                </hgroup>
 
-				<div id="MealCatContainer" class="cards-wrapper"></div>
-			</section>
+                <div id="MealCatContainer" class="cards-wrapper"></div>
+            </section>
 
-			<section id="InventoryView" hidden>
-				<hgroup>
-					<h1>Inventory</h1>
-					<p>
-						Here you can keep track of how much of certain ingredients you have.
-					</p>
-				</hgroup>
+            <section id="InventoryView" hidden>
+                <hgroup>
+                    <h1>Inventory</h1>
+                    <p>
+                        Here you can keep track of how much of certain ingredients you have.
+                    </p>
+                </hgroup>
 
-				<div id="InvContainer" class="cards-wrapper"></div>
-			</section>
+                <div id="InvContainer" class="cards-wrapper"></div>
+            </section>
 
-			<dialog id="MealFormModal">
-				<article>
-					<header>
-						<button aria-label="Close" rel="prev" id="CloseModalBtn"></button>
-						<h3 id="MealFormTitle">Add/Edit Meal</h3>
-					</header>
-					<form id="MealForm">
-						<input type="hidden" id="MealIdInput" value="" />
+            <dialog id="MealFormModal">
+                <article>
+                    <header>
+                        <button aria-label="Close" rel="prev" id="CloseModalBtn"></button>
+                        <h3 id="MealFormTitle">Add/Edit Meal</h3>
+                    </header>
+                    <form id="MealForm">
+                        <input type="hidden" id="MealIdInput" value="" />
 
-						<label for="MealName">Meal Name</label>
-						<input type="text" id="MealName" name="name" autocomplete="name" required />
+                        <label for="MealName">Meal Name</label>
+                        <input type="text" id="MealName" name="name" autocomplete="name" required />
 
-						<label for="MealCategory">Category</label>
-						<select id="MealCategory" name="category" required>
-							<option value="" disabled selected>Select a category...</option>
-							<option value="Morning">Morning</option>
-							<option value="Afternoon">Afternoon</option>
-							<option value="Snacky">Snacky</option>
-							<option value="Dessert">Dessert</option>
-						</select>
+                        <label for="MealCategory">Category</label>
+                        <select id="MealCategory" name="category" required>
+                            <option value="" disabled selected>Select a category...</option>
+                            <option value="Morning">Morning</option>
+                            <option value="Afternoon">Afternoon</option>
+                            <option value="Snacky">Snacky</option>
+                            <option value="Dessert">Dessert</option>
+                        </select>
 
-						<label for="MealSubCategory">Subcategory</label>
-						<input type="text" id="MealSubCategory" />
+                        <label for="MealSubCategory">Subcategory</label>
+                        <input type="text" id="MealSubCategory" />
 
-						<label for="MealIngredients">Ingredients</label>
+                        <label for="MealIngredients">Ingredients</label>
 
-						<div id="IngredientList" class="ingredient-chip-container"></div>
+                        <div id="IngredientList" class="ingredient-chip-container"></div>
 
-						<div class="ingredient-input-group">
-							<input
-								type="text"
-								id="MealIngredients"
-								placeholder="Add an ingredient..."
-							/>
-							<button type="button" id="AddIngredientBtn">+</button>
-						</div>
+                        <div class="ingredient-input-group">
+                            <input
+                                type="text"
+                                id="MealIngredients"
+                                placeholder="Add an ingredient..."
+                            />
+                            <button type="button" id="AddIngredientBtn">+</button>
+                        </div>
 
-						<label for="SidesAllowed">Sides Allowed</label>
-						<input
-							type="number"
-							id="SidesAllowed"
-							name="SidesAllowed"
-							min="0"
-							max="5"
-							value="0"
-						/>
+                        <label for="SidesAllowed">Sides Allowed</label>
+                        <input
+                            type="number"
+                            id="SidesAllowed"
+                            name="SidesAllowed"
+                            min="0"
+                            max="5"
+                            value="0"
+                        />
 
-						<label>
-							<input
-								name="allergenToggle"
-								type="checkbox"
-								role="switch"
-								id="allergenToggle"
-							/>
-							This is an allergen!
-						</label>
+                        <label>
+                            <input
+                                name="allergenToggle"
+                                type="checkbox"
+                                role="switch"
+                                id="allergenToggle"
+                            />
+                            This is an allergen!
+                        </label>
 
-						<footer>
-							<button type="submit" id="saveMealBtn">Save Meal</button>
-						</footer>
-					</form>
-				</article>
-			</dialog>
-		</main>
+                        <footer>
+                            <button type="submit" id="saveMealBtn">Save Meal</button>
+                        </footer>
+                    </form>
+                </article>
+            </dialog>
+        </main>
 
-		<div class="utilBar">
-			<div
-				role="button"
-				id="BackBtn"
-				data-tooltip="Go Back"
-				data-placement="top"
-				hidden
-			>
-				&#129032;
-			</div>
-			<div role="button" id="NavInvBtn">Inv</div>
-			<div role="button" id="addMealButton"><strong>+</strong></div>
-			<div role="button" id="NavMenuBtn">Menu</div>
-		</div>
+        <div class="utilBar">
+            <div
+                role="button"
+                id="BackBtn"
+                data-tooltip="Go Back"
+                data-placement="top"
+                hidden
+            >
+                &#129032;
+            </div>
+            <div role="button" id="NavInvBtn">Inv</div>
+            <div role="button" id="addMealButton"><strong>+</strong></div>
+            <div role="button" id="NavMenuBtn">Menu</div>
+        </div>
 
-		<script src="./Libs/dexie.min.js"></script>
-		<script src="./JS/db.js"></script>
-		<script src="./JS/rendermeals.js"></script>
-		<script src="./JS/main.js"></script>
-		<script src="./JS/AddMeals.js"></script>
-		<script src="./JS/inventoryManager.js"></script>
-	</body>
+        <script src="./Libs/dexie.min.js"></script>
+        <script src="./JS/db.js"></script>
+        <script src="./JS/rendermeals.js"></script>
+        <script src="./JS/main.js"></script>
+        <script src="./JS/AddMeals.js"></script>
+        <script src="./JS/inventoryManager.js"></script>
+    </body>
 </html>
