@@ -1,0 +1,21 @@
+{
+  "short_name": "MealTracker",
+  "name": "Meal & Recipe Tracker",
+  "icons": [
+    {
+      "src": "./assets/food192by192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./assets/food512by512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#13171f",
+  "theme_color": "#13171f",
+  "display": "standalone",
+  "orientation": "any"
+}
