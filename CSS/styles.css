@@ -1,7 +1,9 @@
 /* 1. LAYOUT & UTILITIES */
+main.container-fluid {
+  padding-bottom: 3rem;
+}
 
 
-   
 body.modal-open {
   overflow: hidden;
 }
@@ -13,6 +15,7 @@ body.modal-open {
   position: fixed;
   z-index: 1000;
   bottom: 0;
+  left: 0;
   border-top: 1px solid var(--pico-primary-inverse);
 }
 
