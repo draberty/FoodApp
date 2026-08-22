@@ -4,7 +4,6 @@ const MealModal = document.getElementById("MealFormModal");
 const MealForm = document.getElementById("MealForm");
 const MealId = document.getElementById("MealIdInput");
 const MealFormTitle = document.getElementById("MealFormTitle");
-const CloseModalBtn = document.getElementsByClassName("CloseModalBtn");
 
 const MealName = document.getElementById("MealName");
 const MealCat = document.getElementById("MealCategory");
