@@ -1,4 +1,4 @@
-#WORK IN PROGRESS
+# WORK IN PROGRESS
 
 A offline first Meal planner and Menu tracker.
 
