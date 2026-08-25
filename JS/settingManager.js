@@ -38,9 +38,7 @@ function closeSettings() {
     }
 }
 
-// --- THEME & ACCENT PREFERENCES ---
 function applyTheme(themeMode, accentColor) {
-    // If no values are passed, fetch the saved preferences from localStorage
     const mode = themeMode ?? (localStorage.getItem(STORAGE_KEYS.THEME_MODE) || "auto");
     const color = accentColor ?? (localStorage.getItem(STORAGE_KEYS.ACCENT_COLOR) || "indigo");
 
@@ -56,13 +54,16 @@ function applyTheme(themeMode, accentColor) {
     root.setAttribute("data-theme", resolvedTheme);
     root.setAttribute("data-color", color);
 
-    // 3. Dynamically rebind Pico primary variables to the active palette
-    root.style.setProperty("--pico-primary", `var(--pico-color-${color}-500)`);
-    root.style.setProperty("--pico-primary-background", `var(--pico-color-${color}-500)`);
-    root.style.setProperty("--pico-primary-border", `var(--pico-color-${color}-500)`);
-    root.style.setProperty("--pico-primary-hover", `var(--pico-color-${color}-600)`);
-    root.style.setProperty("--pico-primary-hover-background", `var(--pico-color-${color}-600)`);
-    root.style.setProperty("--pico-primary-focus", `var(--pico-color-${color}-500)`);
+    const shade = resolvedTheme === "dark" ? "650" : "400";
+    const hoverShade = resolvedTheme === "dark" ? "600" : "600";
+
+    // 4. Dynamically rebind Pico primary variables
+    root.style.setProperty("--pico-primary", `var(--pico-color-${color}-${shade})`);
+    root.style.setProperty("--pico-primary-background", `var(--pico-color-${color}-${shade})`);
+    root.style.setProperty("--pico-primary-border", `var(--pico-color-${color}-${shade})`);
+    root.style.setProperty("--pico-primary-hover", `var(--pico-color-${color}-${hoverShade})`);
+    root.style.setProperty("--pico-primary-hover-background", `var(--pico-color-${color}-${hoverShade})`);
+    root.style.setProperty("--pico-primary-focus", `var(--pico-color-${color}-${shade})`);
 }
 
 // Apply saved theme settings immediately on script execution to prevent flashing
