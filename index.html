@@ -14,28 +14,26 @@
 		<main class="container-fluid">
 			<section id="MenuView">
 				<hgroup>
-					<h1>What are you feeling today?</h1>
+					<h1>What type of meal are you feelinng today?</h1>
 					<p>Select a menu option below:</p>
 				</hgroup>
 
 				<div class="grid">
 					<div role="button" class="Action" data-categories="Morning">
-						Morning
+						Morning Menu
 					</div>
 					<div role="button" class="Action" data-categories="Afternoon">
-						Afternoon
+						Afternoon Menu
 					</div>
 					<div role="button" class="Action" data-categories="Snacky">
-						Snacky
+						Snacky Menu
 					</div>
 					<div role="button" class="Action" data-categories="Dessert">
-						Dessert
+						Dessert Menu
 					</div>
 				</div>
 			</section>
 
-			<!-- This section displays the selected meal options -->
-			<!-- It is hidden by default -->
 			<section id="MealView" hidden>
 				<hgroup>
 					<h1 id="MealCatTitle">Category</h1>
@@ -54,6 +52,15 @@
 				</hgroup>
 
 				<div id="InvContainer" class="cards-wrapper"></div>
+			</section>
+
+			<section id="CoursePlannerView" hidden>
+				<hgroup>
+					<h1>Courses</h1>
+					<p>Here you view your courses for the week!</p>
+				</hgroup>
+
+				<div id="CoursePlannerConatiner">Something is on the way!</div>
 			</section>
 
 			<dialog id="MealFormModal">
@@ -98,8 +105,11 @@
 							<input
 								type="text"
 								id="MealIngredients"
+								list="inventoryList"
 								placeholder="Add an ingredient..."
+								autocomplete="off"
 							/>
+							<datalist id="inventoryList"></datalist>
 							<button type="button" id="AddIngredientBtn">+</button>
 						</div>
 
@@ -190,12 +200,16 @@
 					</form>
 				</article>
 			</dialog>
+
+			<dialog id="CourseCreatorModal">
+				<article></article>
+			</dialog>
 		</main>
 
 		<div class="utilBar">
-			<div role="button" id="NavInvBtn">Inv</div>
-			<div role="button" id="NewItemButton"><strong>+</strong></div>
-			<div role="button" id="NavMenuBtn">Menu</div>
+			<div role="button" id="NavInvBtn">Inventory</div>
+			<div role="button" id="NavNewItemBtn"><strong>+</strong></div>
+			<div role="button" id="NavCourseBtn">Courses</div>
 			<div
 				role="button"
 				id="BackBtn"

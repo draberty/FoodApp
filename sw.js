@@ -11,7 +11,7 @@ const ASSETS_TO_CACHE = [
 	"JS/db.js",
 	"JS/main.js",
 	"JS/AddMeals.js",
-	"JS/chooseSides.js",
+	"JS/assembleCourse.js",
 	"JS/inventoryManager.js",
 	"JS/rendermeals.js",
 ];

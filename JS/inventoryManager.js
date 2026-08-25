@@ -31,7 +31,7 @@ async function renderInv() {
             
             <div>
                 <label>Unit:</label>
-                <input type="text" class="unitInput" value="${unitVal}" placeholder="e.g. lbs, Bags" onfocus="this.select()" />
+                <input type="text" class="unitInput" value="${unitVal}" placeholder="e.g. lbs, Bags, etc..." onfocus="this.select()" />
             </div>
 
             <div>
@@ -123,3 +123,21 @@ InvModal.addEventListener("submit", async (e) => {
 
 	InvModal.close();
 });
+
+
+async function populateInventorySuggestions() {
+    const dataList = document.getElementById("inventoryList");
+    if (!dataList) return;
+
+    try {
+        // Fetch all inventory items from Dexie
+        const inventoryItems = await db.inventory.toArray();
+        
+        // Build option elements
+        dataList.innerHTML = inventoryItems
+            .map(item => `<option value="${item.name}">${item.qty ? `(${item.qty} ${item.unit || ''})` : ''}</option>`)
+            .join("");
+    } catch (err) {
+        console.error("Failed to fetch inventory suggestions:", err);
+    }
+}

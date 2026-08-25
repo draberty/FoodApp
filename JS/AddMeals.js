@@ -15,43 +15,43 @@ const ingredientList = document.getElementById("IngredientList");
 const allergenToggle = document.getElementById("allergenToggle");
 
 function renderIngredientChips() {
-	ingredientList.innerHTML = currentIngredients
-		.map(
-			(item, index) => `
+    ingredientList.innerHTML = currentIngredients
+        .map(
+            (item, index) => `
     <span class="chip">
       ${item}
       <span class="remove-chip" data-index="${index}">&times;</span>
     </span>
   `,
-		)
-		.join("");
+        )
+        .join("");
 }
 
 function addIngredients() {
-	const value = MealIngredients.value.trim();
-	if (value) {
-		currentIngredients.push(value);
-		MealIngredients.value = "";
-		renderIngredientChips();
-	}
+    const value = MealIngredients.value.trim();
+    if (value) {
+        currentIngredients.push(value);
+        MealIngredients.value = "";
+        renderIngredientChips();
+    }
 }
 
 addIngredientBtn.addEventListener("click", addIngredients);
 
 MealIngredients.addEventListener("keydown", (e) => {
-	if (e.key === "Enter") {
-		e.preventDefault();
-		addIngredients();
-	}
+    if (e.key === "Enter") {
+        e.preventDefault();
+        addIngredients();
+    }
 });
 
 ingredientList.addEventListener("click", (e) => {
-	if (e.target.classList.contains("remove-chip")) {
-		const index = Number(e.target.dataset.index);
+    if (e.target.classList.contains("remove-chip")) {
+        const index = Number(e.target.dataset.index);
 
-		currentIngredients.splice(index, 1);
-		renderIngredientChips();
-	}
+        currentIngredients.splice(index, 1);
+        renderIngredientChips();
+    }
 });
 
 // Modal code
@@ -62,6 +62,7 @@ function openAddMealModal(activeCategory) {
 	currentIngredients = [];
 	allergenToggle.checked = false;
 	renderIngredientChips();
+	populateInventorySuggestions();
 
 	const categorySelect = document.getElementById("MealCategory");
 	if (activeCategory) {
@@ -81,6 +82,7 @@ async function openEditMealModal(mealId) {
 	if (!meal) return;
 
 	MealId.value = meal.id;
+	populateInventorySuggestions();
 
 	MealName.value = meal.name || "";
 	MealCat.value = Array.isArray(meal.categories)

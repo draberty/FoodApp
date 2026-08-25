@@ -1,138 +1,142 @@
 /* 1. LAYOUT & UTILITIES */
 :root {
-  color-scheme: dark;
+	color-scheme: dark;
 }
 
 main.container-fluid {
-  padding-bottom: 3rem;
+	padding-bottom: 3rem;
 }
 
-
 body.modal-open {
-  overflow: hidden;
+	overflow: hidden;
 }
 
 .utilBar {
-  width: 100%;
-  display: grid;
-  grid-auto-flow: column;
-  position: fixed;
-  z-index: 1000;
-  bottom: 0;
-  left: 0;
-  border-top: 1px solid var(--pico-primary-inverse);
+	width: 100%;
+	display: flex;
+	position: fixed;
+	z-index: 1000;
+	bottom: 0;
+	left: 0;
+	border-top: 1px solid var(--pico-primary-inverse);
+}
+
+.utilBar [role="button"] {
+	flex: 1 1 0;
+	text-align: center;
+	margin-bottom: 0;
 }
 
 .utilBar div {
-  border-radius: 0;
+	border-radius: 0;
 }
 
 /* 2. MEAL CARDS & CONTAINERS */
 
 .cards-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
 }
 
 .cards-wrapper article {
-  flex: 1 1 300px;
-  margin-bottom: 0;
-  display: flex;
-  flex-direction: column;
+	flex: 1 1 300px;
+	margin-bottom: 0;
+	display: flex;
+	flex-direction: column;
 }
 
 /* Card Header */
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--pico-muted-border-color, #e2e8f0);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid var(--pico-muted-border-color, #e2e8f0);
 }
 
 .card-title {
-  font-weight: 600;
-  font-size: 1.1rem;
+	font-weight: 600;
+	font-size: 1.1rem;
 }
 
 /* Card Actions */
 .card-actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: stretch;
-  margin-top: auto; 
+	display: flex;
+	gap: 0.5rem;
+	align-items: stretch;
+	margin-top: auto;
 }
 
 .card-actions [role="button"] {
-  flex: 1;
-  margin-bottom: 0;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 0.75rem; 
+	flex: 1;
+	margin-bottom: 0;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5rem 0.75rem;
 }
 
 /* 3. INGREDIENTS & FORM CONTROLS */
 
 .ingredient-chip-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
 .chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: var(--pico-primary-background);
-  color: var(--pico-primary-inverse);
-  padding: 0.25rem 0.6rem;
-  border-radius: 1rem;
-  font-size: 0.875rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background-color: var(--pico-primary-background);
+	color: var(--pico-primary-inverse);
+	padding: 0.25rem 0.6rem;
+	border-radius: 1rem;
+	font-size: 0.875rem;
 }
 
 .chip .remove-chip {
-  cursor: pointer;
-  font-weight: bold;
+	cursor: pointer;
+	font-weight: bold;
 }
 
 .ingredient-input-group {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: var(--pico-spacing, 1rem);
+	display: flex;
+	gap: 0.5rem;
+	margin-bottom: var(--pico-spacing, 1rem);
 }
 
 .ingredient-input-group input {
-  margin-bottom: 0; /* Prevents Pico bottom spacing */
+	margin-bottom: 0; /* Prevents Pico bottom spacing */
 }
 
 .ingredient-input-group button {
-  width: auto;
-  padding: 0 1rem;
-  margin-bottom: 0;
+	width: auto;
+	padding: 0 1rem;
+	margin-bottom: 0;
 }
 
 /* 4. BADGES & INDICATORS */
 
 .allergen-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--pico-del-color, #991b1b);
-  background-color: var(--pico-del-background, #fee2e2);
-  border: 1px solid var(--pico-del-border, #fca5a5);
-  padding: 0.2rem 0.5rem;
-  border-radius: 9999px;
-  white-space: nowrap;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--pico-del-color, #991b1b);
+	background-color: var(--pico-del-background, #fee2e2);
+	border: 1px solid var(--pico-del-border, #fca5a5);
+	padding: 0.2rem 0.5rem;
+	border-radius: 9999px;
+	white-space: nowrap;
 }
 
 .allergen-badge::before {
-  content: "⚠️";
-  font-size: 0.7rem;
+	content: "⚠️";
+	font-size: 0.7rem;
 }
