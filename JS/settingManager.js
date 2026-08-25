@@ -20,7 +20,6 @@ function closeSettings() {
     }
 }
 
-// Bind modal UI listeners after DOM content loads
 document.addEventListener("DOMContentLoaded", () => {
     const modal = getSettingsModal();
     const closeBtn = document.getElementById("CloseSettingsBtn");
@@ -50,34 +49,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 course,
             };
 
-            const fileName = `food-prep-backup-${new Date().toISOString().split("T")[0]}.json`;
             const jsonString = JSON.stringify(backupData, null, 2);
-
-            // Detect mobile devices (Android / iOS)
             const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
-            // 1. Mobile Native Share Sheet Handling
             if (isMobile && navigator.share) {
-                try {
-                    // Sharing via text payload guarantees mobile share sheet invocation without strict file type rejection
-                    await navigator.share({
-                        title: "Food Prep Backup",
-                        text: jsonString,
-                    });
-                    return;
-                } catch (shareErr) {
-                    // Ignore user cancelling the share modal
-                    if (shareErr.name === "AbortError") return;
-                    console.warn("Mobile Web Share failed, switching to direct file download:", shareErr);
+                // 1. Mobile: Name file with .txt and text/plain MIME type so Web Share accepts it
+                const mobileFileName = `food-prep-backup-${new Date().toISOString().split("T")[0]}.txt`;
+                const file = new File([jsonString], mobileFileName, { type: "text/plain" });
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: "Food Prep Backup",
+                        });
+                        return;
+                    } catch (shareErr) {
+                        if (shareErr.name === "AbortError") return;
+                        console.warn("Mobile share sheet failed, falling back to direct download:", shareErr);
+                    }
                 }
             }
 
-            // 2. Desktop Direct File Download
+            // 2. Desktop Fallback: Standard .json file download
+            const desktopFileName = `food-prep-backup-${new Date().toISOString().split("T")[0]}.json`;
             const blob = new Blob([jsonString], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = fileName;
+            a.download = desktopFileName;
             
             document.body.appendChild(a);
             a.click();
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Data Import (JSON -> Dexie Database)
+    // Data Import (Reads both .json and .txt seamlessly)
     importInput?.addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -98,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
+                // JSON.parse converts the text back into an object regardless of .txt or .json extension
                 const data = JSON.parse(event.target.result);
 
                 if (!data.meals || !data.inventory || !data.sides || !data.course) {
@@ -123,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (err) {
                 console.error("Import failed:", err);
-                alert("Failed to import backup file. Ensure it is a valid JSON backup.");
+                alert("Failed to import backup file. Ensure it is a valid backup file.");
             } finally {
                 e.target.value = "";
             }
