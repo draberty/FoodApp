@@ -130,10 +130,8 @@ async function populateInventorySuggestions() {
     if (!dataList) return;
 
     try {
-        // Fetch all inventory items from Dexie
         const inventoryItems = await db.inventory.toArray();
         
-        // Build option elements
         dataList.innerHTML = inventoryItems
             .map(item => `<option value="${item.name}">${item.qty ? `(${item.qty} ${item.unit || ''})` : ''}</option>`)
             .join("");
