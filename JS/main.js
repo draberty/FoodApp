@@ -33,7 +33,6 @@ let currentSelectedMeals = "";
 let currentView = null;
 
 // Element References
-const $ = (id) => document.getElementById(id);
 const MenuView = $("MenuView"),
     MealView = $("MealView"),
     InvView = $("InventoryView"),
@@ -43,7 +42,8 @@ const MenuView = $("MenuView"),
     InvBtn = $("NavInvBtn"),
     CourseBtn = $("NavCourseBtn"),
     MealCatContainer = $("MealCatContainer"),
-    InvContainer = $("InvContainer");
+    InvContainer = $("InvContainer"),
+    SettingsBtn = $("SettingsBtn");
 
 const views = [
     { id: "MenuView", el: MenuView },
@@ -130,6 +130,7 @@ InvBtn.addEventListener("click", () => {
 });
 
 CourseBtn.addEventListener("click", () => showView(CourseView));
+SettingsBtn.addEventListener("click", () => showSettings());
 
 MealCatContainer.addEventListener("click", async (e) => {
     const card = e.target.closest("article");

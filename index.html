@@ -13,9 +13,19 @@
 	<body>
 		<main class="container-fluid">
 			<section id="MenuView">
-				<hgroup>
+				<hgroup class="view-header">
 					<h1>What type of meal are you feelinng today?</h1>
 					<p>Select a menu option below:</p>
+
+					<div class="top-actions">
+						<button
+							id="SettingsBtn"
+							class="icon-circle-btn"
+							aria-label="Settings"
+						>
+							⚙️
+						</button>
+					</div>
 				</hgroup>
 
 				<div class="grid">
@@ -238,6 +248,44 @@
 			<dialog id="CourseCreatorModal">
 				<article></article>
 			</dialog>
+
+			<dialog id="SettingsModal">
+				<article>
+					<header>
+						<button
+							aria-label="Close"
+							rel="prev"
+							class="CloseModalBtn"
+							id="CloseSettingsBtn"
+						></button>
+						<h3>Settings & Data</h3>
+					</header>
+
+					<section>
+						<h4>Data Backup</h4>
+						<p>
+							<small
+								>Export your recipes and inventory to a JSON file or restore
+								from a previous backup.</small
+							>
+						</p>
+
+						<div class="grid">
+							<button type="button" id="ExportBtn">Export Backup</button>
+
+							<label
+								role="button"
+								class="secondary"
+								for="ImportInput"
+								style="margin: 0; cursor: pointer; text-align: center"
+							>
+								Import Backup
+							</label>
+							<input type="file" id="ImportInput" accept=".json" hidden />
+						</div>
+					</section>
+				</article>
+			</dialog>
 		</main>
 
 		<div class="utilBar">
@@ -259,6 +307,7 @@
 		<script src="./JS/db.js"></script>
 		<script src="./JS/inventoryManager.js"></script>
 		<script src="./JS/mealsManager.js"></script>
+		<script src="./JS/settingManager.js"></script>
 		<script src="./JS/main.js"></script>
 	</body>
 </html>

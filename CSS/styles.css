@@ -42,6 +42,38 @@ details.dropdown summary::marker {
     opacity: 0;
 }
 
+/* Quick Settings Header Positioning */
+.view-header {
+    position: relative;
+    padding-right: 3rem; /* Prevents long titles from overlapping the button */
+}
+
+.top-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Round Quick-Settings Style Icon Button */
+.icon-circle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
 /* 2. MEAL CARDS & CONTAINERS */
 
 .cards-wrapper {
