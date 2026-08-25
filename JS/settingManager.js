@@ -1,5 +1,12 @@
 // settingsManager.js
 
+// --- STORAGE KEYS ---
+const STORAGE_KEYS = {
+    THEME_MODE: "app_theme_mode",
+    ACCENT_COLOR: "app_color_scheme",
+};
+
+// --- MODAL CONTROLS ---
 const getSettingsModal = () => document.getElementById("SettingsModal");
 
 function showSettings() {
@@ -8,6 +15,17 @@ function showSettings() {
         console.error("Error: #SettingsModal element was not found in the DOM.");
         return;
     }
+
+    // Sync UI values right before opening
+    const savedMode = localStorage.getItem(STORAGE_KEYS.THEME_MODE) || "auto";
+    const savedColor = localStorage.getItem(STORAGE_KEYS.ACCENT_COLOR) || "indigo";
+
+    const modeSelect = document.getElementById("ThemeModeSelect");
+    const colorSelect = document.getElementById("AccentColorSelect");
+
+    if (modeSelect) modeSelect.value = savedMode;
+    if (colorSelect) colorSelect.value = savedColor;
+
     modal.showModal();
     document.body.classList.add("modal-open");
 }
@@ -20,16 +38,79 @@ function closeSettings() {
     }
 }
 
+// --- THEME & ACCENT PREFERENCES ---
+function applyTheme(themeMode, accentColor) {
+    // If no values are passed, fetch the saved preferences from localStorage
+    const mode = themeMode ?? (localStorage.getItem(STORAGE_KEYS.THEME_MODE) || "auto");
+    const color = accentColor ?? (localStorage.getItem(STORAGE_KEYS.ACCENT_COLOR) || "indigo");
+
+    const root = document.documentElement;
+
+    // 1. Resolve light/dark mode
+    let resolvedTheme = mode;
+    if (mode === "auto") {
+        resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+
+    // 2. Set DOM attributes
+    root.setAttribute("data-theme", resolvedTheme);
+    root.setAttribute("data-color", color);
+
+    // 3. Dynamically rebind Pico primary variables to the active palette
+    root.style.setProperty("--pico-primary", `var(--pico-color-${color}-500)`);
+    root.style.setProperty("--pico-primary-background", `var(--pico-color-${color}-500)`);
+    root.style.setProperty("--pico-primary-border", `var(--pico-color-${color}-500)`);
+    root.style.setProperty("--pico-primary-hover", `var(--pico-color-${color}-600)`);
+    root.style.setProperty("--pico-primary-hover-background", `var(--pico-color-${color}-600)`);
+    root.style.setProperty("--pico-primary-focus", `var(--pico-color-${color}-500)`);
+}
+
+// Apply saved theme settings immediately on script execution to prevent flashing
+applyTheme();
+
+// --- EVENT BINDINGS ---
 document.addEventListener("DOMContentLoaded", () => {
+    // Re-apply saved theme once DOM is loaded
+    applyTheme();
+
     const modal = getSettingsModal();
+    const settingsBtn = document.getElementById("SettingsBtn");
     const closeBtn = document.getElementById("CloseSettingsBtn");
     const exportBtn = document.getElementById("ExportBtn");
     const importInput = document.getElementById("ImportInput");
+    const modeSelect = document.getElementById("ThemeModeSelect");
+    const colorSelect = document.getElementById("AccentColorSelect");
 
+    // Modal Listeners
+    settingsBtn?.addEventListener("click", showSettings);
     closeBtn?.addEventListener("click", closeSettings);
 
     modal?.addEventListener("click", (e) => {
         if (e.target === modal) closeSettings();
+    });
+
+    // Theme Mode Switcher
+    modeSelect?.addEventListener("change", (e) => {
+        const mode = e.target.value;
+        const currentColor = localStorage.getItem(STORAGE_KEYS.ACCENT_COLOR) || "indigo";
+        localStorage.setItem(STORAGE_KEYS.THEME_MODE, mode);
+        applyTheme(mode, currentColor);
+    });
+
+    // Accent Color Switcher
+    colorSelect?.addEventListener("change", (e) => {
+        const color = e.target.value;
+        const currentMode = localStorage.getItem(STORAGE_KEYS.THEME_MODE) || "auto";
+        localStorage.setItem(STORAGE_KEYS.ACCENT_COLOR, color);
+        applyTheme(currentMode, color);
+    });
+
+    // Dynamic listener for System Theme changes when set to "auto"
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        const savedMode = localStorage.getItem(STORAGE_KEYS.THEME_MODE) || "auto";
+        if (savedMode === "auto") {
+            applyTheme();
+        }
     });
 
     // --- DATA EXPORT ---
@@ -53,10 +134,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const jsonString = JSON.stringify(backupData, null, 2);
             const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
-            // 1. Mobile Native Share Sheet via .txt File Payload
             if (isMobile && navigator.share) {
                 const txtFileName = `food-prep-backup-${dateStr}.txt`;
-                const txtFile = new File([jsonString], txtFileName, { type: "text/plain" });
+                const txtFile = new File([jsonString], txtFileName, {
+                    type: "text/plain",
+                });
 
                 if (navigator.canShare && navigator.canShare({ files: [txtFile] })) {
                     try {
@@ -68,19 +150,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         return;
                     } catch (shareErr) {
                         if (shareErr.name === "AbortError") return;
-                        console.warn("Mobile share sheet failed, falling back to direct download:", shareErr);
+                        console.warn(
+                            "Mobile share sheet failed, falling back to direct download:",
+                            shareErr,
+                        );
                     }
                 }
             }
 
-            // 2. Desktop Direct .json Download Fallback
             const jsonFileName = `food-prep-backup-${dateStr}.json`;
             const blob = new Blob([jsonString], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
             a.download = jsonFileName;
-            
+
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -92,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- DATA IMPORT (Handles both .json and .txt backup files) ---
+    // --- DATA IMPORT ---
     importInput?.addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -100,25 +184,35 @@ document.addEventListener("DOMContentLoaded", () => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
-                // Parses JSON data regardless of whether the file extension is .json or .txt
                 const data = JSON.parse(event.target.result);
 
                 if (!data.meals || !data.inventory || !data.sides || !data.course) {
-                    throw new Error("Invalid backup structure: missing required database tables.");
+                    throw new Error(
+                        "Invalid backup structure: missing required database tables.",
+                    );
                 }
 
-                if (confirm("Importing will overwrite existing database records. Continue?")) {
-                    await db.transaction("rw", [db.meals, db.inventory, db.sides, db.course], async () => {
-                        await db.meals.clear();
-                        await db.inventory.clear();
-                        await db.sides.clear();
-                        await db.course.clear();
+                if (
+                    confirm(
+                        "Importing will overwrite existing database records. Continue?",
+                    )
+                ) {
+                    await db.transaction(
+                        "rw",
+                        [db.meals, db.inventory, db.sides, db.course],
+                        async () => {
+                            await db.meals.clear();
+                            await db.inventory.clear();
+                            await db.sides.clear();
+                            await db.course.clear();
 
-                        if (data.meals.length) await db.meals.bulkAdd(data.meals);
-                        if (data.inventory.length) await db.inventory.bulkAdd(data.inventory);
-                        if (data.sides.length) await db.sides.bulkAdd(data.sides);
-                        if (data.course.length) await db.course.bulkAdd(data.course);
-                    });
+                            if (data.meals.length) await db.meals.bulkPut(data.meals);
+                            if (data.inventory.length)
+                                await db.inventory.bulkPut(data.inventory);
+                            if (data.sides.length) await db.sides.bulkPut(data.sides);
+                            if (data.course.length) await db.course.bulkPut(data.course);
+                        },
+                    );
 
                     alert("Data imported successfully!");
                     closeSettings();
@@ -126,7 +220,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (err) {
                 console.error("Import failed:", err);
-                alert("Failed to import backup file. Ensure it is a valid backup file (.json or .txt).");
+                alert(
+                    "Failed to import backup file. Ensure it is a valid backup file (.json or .txt).",
+                );
             } finally {
                 e.target.value = "";
             }

@@ -1,313 +1,340 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="color-scheme" content="dark" />
-		<meta name="theme-color" content="#13171f" />
-		<link rel="manifest" href="./manifest.json" />
-		<link rel="stylesheet" href="./Libs/pico.indigo.min.css" />
-		<link rel="stylesheet" href="./CSS/styles.css" />
-		<title>Food Prep Menu</title>
-	</head>
-	<body>
-		<main class="container-fluid">
-			<section id="MenuView">
-				<hgroup class="view-header">
-					<h1>What type of meal are you feelinng today?</h1>
-					<p>Select a menu option below:</p>
+<html lang="en" data-theme="dark" data-color="indigo">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="color-scheme" content="dark" />
+        <meta name="theme-color" content="#13171f" />
+        <link rel="manifest" href="./manifest.json" />
+        <link rel="stylesheet" href="./Libs/pico.min.css" />
+        <link rel="stylesheet" href="./Libs/pico.colors.min.css" />
+        <link rel="stylesheet" href="./CSS/styles.css" />
+        <title>Food Prep Menu</title>
+    </head>
+    <body>
+        <main class="container-fluid">
+            <section id="MenuView">
+                <hgroup class="view-header">
+                    <h1>What type of meal are you feelinng today?</h1>
+                    <p>Select a menu option below:</p>
 
-					<div class="top-actions">
-						<button
-							id="SettingsBtn"
-							class="icon-circle-btn"
-							aria-label="Settings"
-						>
-							⚙️
-						</button>
-					</div>
-				</hgroup>
+                    <div class="top-actions">
+                        <button
+                            id="SettingsBtn"
+                            class="icon-circle-btn"
+                            aria-label="Settings"
+                        >
+                            ⚙️
+                        </button>
+                    </div>
+                </hgroup>
 
-				<div class="grid">
-					<div role="button" class="Action" data-categories="Morning">
-						Morning Menu
-					</div>
-					<div role="button" class="Action" data-categories="Afternoon">
-						Afternoon Menu
-					</div>
-					<div role="button" class="Action" data-categories="Snacky">
-						Snacky Menu
-					</div>
-					<div role="button" class="Action" data-categories="Dessert">
-						Dessert Menu
-					</div>
-				</div>
-			</section>
+                <div class="grid">
+                    <div role="button" class="Action" data-categories="Morning">
+                        Morning Menu
+                    </div>
+                    <div role="button" class="Action" data-categories="Afternoon">
+                        Afternoon Menu
+                    </div>
+                    <div role="button" class="Action" data-categories="Snacky">
+                        Snacky Menu
+                    </div>
+                    <div role="button" class="Action" data-categories="Dessert">
+                        Dessert Menu
+                    </div>
+                </div>
+            </section>
 
-			<section id="MealView" hidden>
-				<hgroup>
-					<h1 id="MealCatTitle">Category</h1>
-					<p id="MealCatDescription">Description</p>
-				</hgroup>
+            <section id="MealView" hidden>
+                <hgroup>
+                    <h1 id="MealCatTitle">Category</h1>
+                    <p id="MealCatDescription">Description</p>
+                </hgroup>
 
-				<div id="MealCatContainer" class="cards-wrapper"></div>
-			</section>
+                <div id="MealCatContainer" class="cards-wrapper"></div>
+            </section>
 
-			<section id="InventoryView" hidden>
-				<hgroup>
-					<h1>Inventory</h1>
-					<p>
-						Here you can keep track of how much of certain ingredients you have.
-					</p>
-				</hgroup>
+            <section id="InventoryView" hidden>
+                <hgroup>
+                    <h1>Inventory</h1>
+                    <p>
+                        Here you can keep track of how much of certain ingredients you have.
+                    </p>
+                </hgroup>
 
-				<div id="InvContainer" class="cards-wrapper"></div>
-			</section>
+                <div id="InvContainer" class="cards-wrapper"></div>
+            </section>
 
-			<section id="CoursePlannerView" hidden>
-				<hgroup>
-					<h1>Courses</h1>
-					<p>Here you view your courses for the week!</p>
-				</hgroup>
+            <section id="CoursePlannerView" hidden>
+                <hgroup>
+                    <h1>Courses</h1>
+                    <p>Here you view your courses for the week!</p>
+                </hgroup>
 
-				<div id="CoursePlannerConatiner">Something is on the way!</div>
-			</section>
+                <div id="CoursePlannerConatiner">Something is on the way!</div>
+            </section>
 
-			<dialog id="MealFormModal">
-				<article>
-					<header>
-						<button
-							aria-label="Close"
-							rel="prev"
-							class="CloseModalBtn"
-						></button>
-						<h3 id="MealFormTitle">Add/Edit Meal</h3>
-					</header>
-					<form id="MealForm">
-						<input type="hidden" id="MealIdInput" value="" />
+            <dialog id="MealFormModal">
+                <article>
+                    <header>
+                        <button
+                            aria-label="Close"
+                            rel="prev"
+                            class="CloseModalBtn"
+                        ></button>
+                        <h3 id="MealFormTitle">Add/Edit Meal</h3>
+                    </header>
+                    <form id="MealForm">
+                        <input type="hidden" id="MealIdInput" value="" />
 
-						<label for="MealName">Meal Name</label>
-						<input
-							type="text"
-							id="MealName"
-							name="name"
-							autocomplete="on"
-							required
-						/>
+                        <label for="MealName">Meal Name</label>
+                        <input
+                            type="text"
+                            id="MealName"
+                            name="name"
+                            autocomplete="on"
+                            required
+                        />
 
-						<label>Category</label>
-						<details class="dropdown" id="CategoryDropdown">
-							<summary id="CategorySummary">Select categories...</summary>
-							<ul>
-								<li>
-									<label>
-										<input
-											type="checkbox"
-											name="mealCategory"
-											value="Morning"
-										/>
-										Morning
-									</label>
-								</li>
-								<li>
-									<label>
-										<input
-											type="checkbox"
-											name="mealCategory"
-											value="Afternoon"
-										/>
-										Afternoon
-									</label>
-								</li>
-								<li>
-									<label>
-										<input type="checkbox" name="mealCategory" value="Snacky" />
-										Snacky
-									</label>
-								</li>
-								<li>
-									<label>
-										<input
-											type="checkbox"
-											name="mealCategory"
-											value="Dessert"
-										/>
-										Dessert
-									</label>
-								</li>
-							</ul>
-						</details>
+                        <label>Category</label>
+                        <details class="dropdown" id="CategoryDropdown">
+                            <summary id="CategorySummary">Select categories...</summary>
+                            <ul>
+                                <li>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="mealCategory"
+                                            value="Morning"
+                                        />
+                                        Morning
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="mealCategory"
+                                            value="Afternoon"
+                                        />
+                                        Afternoon
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="mealCategory" value="Snacky" />
+                                        Snacky
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="mealCategory"
+                                            value="Dessert"
+                                        />
+                                        Dessert
+                                    </label>
+                                </li>
+                            </ul>
+                        </details>
 
-						<label for="MealSubCategory">Subcategory</label>
-						<input type="text" id="MealSubCategory" />
+                        <label for="MealSubCategory">Subcategory</label>
+                        <input type="text" id="MealSubCategory" />
 
-						<label for="MealIngredients">Ingredients</label>
+                        <label for="MealIngredients">Ingredients</label>
 
-						<div id="IngredientList" class="ingredient-chip-container"></div>
+                        <div id="IngredientList" class="ingredient-chip-container"></div>
 
-						<div class="ingredient-input-group">
-							<datalist id="inventoryList"></datalist>
-							<input
-								type="text"
-								id="MealIngredients"
-								list="inventoryList"
-								placeholder="Search or type an ingredient..."
-								autocomplete="on"
-							/>
-							<button type="button" id="AddIngredientBtn">+</button>
-						</div>
+                        <div class="ingredient-input-group">
+                            <datalist id="inventoryList"></datalist>
+                            <input
+                                type="text"
+                                id="MealIngredients"
+                                list="inventoryList"
+                                placeholder="Search or type an ingredient..."
+                                autocomplete="on"
+                            />
+                            <button type="button" id="AddIngredientBtn">+</button>
+                        </div>
 
-						<label for="SidesAllowed">Sides Allowed</label>
-						<input
-							type="number"
-							id="SidesAllowed"
-							name="SidesAllowed"
-							min="0"
-							max="5"
-							value="0"
-						/>
+                        <label for="SidesAllowed">Sides Allowed</label>
+                        <input
+                            type="number"
+                            id="SidesAllowed"
+                            name="SidesAllowed"
+                            min="0"
+                            max="5"
+                            value="0"
+                        />
 
-						<label>
-							<input
-								name="allergenToggle"
-								type="checkbox"
-								role="switch"
-								id="allergenToggle"
-							/>
-							This is an allergen!
-						</label>
+                        <label>
+                            <input
+                                name="allergenToggle"
+                                type="checkbox"
+                                role="switch"
+                                id="allergenToggle"
+                            />
+                            This is an allergen!
+                        </label>
 
-						<footer>
-							<button type="submit" id="saveMealBtn">Save Meal</button>
-						</footer>
-					</form>
-				</article>
-			</dialog>
+                        <footer>
+                            <button type="submit" id="saveMealBtn">Save Meal</button>
+                        </footer>
+                    </form>
+                </article>
+            </dialog>
 
-			<dialog id="InvFormModal">
-				<article>
-					<header>
-						<button
-							aria-label="Close"
-							rel="prev"
-							class="CloseModalBtn"
-						></button>
-						<h3>Add ingredient</h3>
-					</header>
-					<form id="IngredientForm">
-						<label for="IngredientName">Ingredient Name</label>
-						<input
-							type="text"
-							id="IngredientName"
-							name="name"
-							autocomplete="on"
-							placeholder="Enter a name..."
-							required
-						/>
+            <dialog id="InvFormModal">
+                <article>
+                    <header>
+                        <button
+                            aria-label="Close"
+                            rel="prev"
+                            class="CloseModalBtn"
+                        ></button>
+                        <h3>Add ingredient</h3>
+                    </header>
+                    <form id="IngredientForm">
+                        <label for="IngredientName">Ingredient Name</label>
+                        <input
+                            type="text"
+                            id="IngredientName"
+                            name="name"
+                            autocomplete="on"
+                            placeholder="Enter a name..."
+                            required
+                        />
 
-						<label for="IngredientQty">Quantity</label>
-						<input
-							type="number"
-							id="IngredientQty"
-							name="IngredientQty"
-							min="0.1"
-							step="0.1"
-							value="1.0"
-							required
-						/>
+                        <label for="IngredientQty">Quantity</label>
+                        <input
+                            type="number"
+                            id="IngredientQty"
+                            name="IngredientQty"
+                            min="0.1"
+                            step="0.1"
+                            value="1.0"
+                            required
+                        />
 
-						<label for="IngredientUnit">Unit of measurement</label>
-						<input
-							type="text"
-							id="IngredientUnit"
-							name="unit"
-							autocomplete="on"
-							placeholder="Enter a unit..."
-						/>
+                        <label for="IngredientUnit">Unit of measurement</label>
+                        <input
+                            type="text"
+                            id="IngredientUnit"
+                            name="unit"
+                            autocomplete="on"
+                            placeholder="Enter a unit..."
+                        />
 
-						<label for="IngredientStep">Measurement Step</label>
-						<input
-							type="number"
-							id="IngredientStep"
-							name="step"
-							min="0.01"
-							step="0.01"
-							value="1.0"
-							required
-						/>
+                        <label for="IngredientStep">Measurement Step</label>
+                        <input
+                            type="number"
+                            id="IngredientStep"
+                            name="step"
+                            min="0.01"
+                            step="0.01"
+                            value="1.0"
+                            required
+                        />
 
-						<footer>
-							<button type="submit" id="saveIngredientBtn">
-								Save Ingredient
-							</button>
-						</footer>
-					</form>
-				</article>
-			</dialog>
+                        <footer>
+                            <button type="submit" id="saveIngredientBtn">
+                                Save Ingredient
+                            </button>
+                        </footer>
+                    </form>
+                </article>
+            </dialog>
 
-			<dialog id="CourseCreatorModal">
-				<article></article>
-			</dialog>
+            <dialog id="CourseCreatorModal">
+                <article></article>
+            </dialog>
 
-			<dialog id="SettingsModal">
-				<article>
-					<header>
-						<button
-							aria-label="Close"
-							rel="prev"
-							class="CloseModalBtn"
-							id="CloseSettingsBtn"
-						></button>
-						<h3>Settings & Data</h3>
-					</header>
+            <dialog id="SettingsModal">
+                <article>
+                    <header>
+                        <button
+                            aria-label="Close"
+                            rel="prev"
+                            id="CloseSettingsBtn"
+                        ></button>
+                        <h3>Settings & Data</h3>
+                    </header>
 
-					<section>
-						<h4>Data Backup</h4>
-						<p>
-							<small
-								>Export your recipes and inventory to a JSON file or restore
-								from a previous backup.</small
-							>
-						</p>
+                    <section>
+                        <h4>Appearance</h4>
 
-						<div class="grid">
-							<button type="button" id="ExportBtn">Export Backup</button>
+                        <!-- Dark / Light Mode -->
+                        <label for="ThemeModeSelect">Theme Mode</label>
+                        <select id="ThemeModeSelect">
+                            <option value="auto">System Default</option>
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                        </select>
 
-							<label
-								role="button"
-								class="secondary"
-								for="ImportInput"
-								style="margin: 0; cursor: pointer; text-align: center"
-							>
-								Import Backup
-							</label>
-							<input type="file" id="ImportInput" accept=".json" hidden />
-						</div>
-					</section>
-				</article>
-			</dialog>
-		</main>
+                        <!-- Primary Color Theme -->
+                        <label for="AccentColorSelect">Accent Color</label>
+                        <select id="AccentColorSelect">
+                            <option value="red">Red</option>
+                            <option value="pink">Pink</option>
+                            <option value="fuchsia">Fuchsia</option>
+                            <option value="purple">Purple</option>
+                            <option value="violet">Violet</option>
+                            <option value="indigo" selected>Indigo (Default)</option>
+                            <option value="blue">Blue</option>
+                            <option value="azure">Azure</option>
+                            <option value="cyan">Cyan</option>
+                            <option value="jade">Jade</option>
+                            <option value="green">Green</option>
+                            <option value="lime">Lime</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="amber">Amber</option>
+                            <option value="pumpkin">Pumpkin</option>
+                            <option value="orange">Orange</option>
+                            <option value="sand">Sand</option>
+                            <option value="grey">Grey</option>
+                            <option value="zinc">Zinc</option>
+                            <option value="slate">Slate</option>
+                        </select>
+                    </section>
 
-		<div class="utilBar">
-			<div role="button" id="NavInvBtn">Inventory</div>
-			<div role="button" id="NavNewItemBtn"><strong>+</strong></div>
-			<div role="button" id="NavCourseBtn">Courses</div>
-			<div
-				role="button"
-				id="BackBtn"
-				data-tooltip="Go Back"
-				data-placement="top"
-				hidden
-			>
-				&larr;
-			</div>
-		</div>
+                    <!-- Data Backup & Import Section -->
+                    <hr />
+                    <section>
+                        <h4>Data Backup</h4>
+                        <button id="ExportBtn">Export Backup</button>
+                        <input type="file" id="ImportInput" accept=".json,.txt" hidden />
+                        <button
+                            id="ImportBtn"
+                            onclick="document.getElementById('ImportInput').click()"
+                        >
+                            Import Backup
+                        </button>
+                    </section>
+                </article>
+            </dialog>
+        </main>
 
-		<script src="./Libs/dexie.min.js"></script>
-		<script src="./JS/db.js"></script>
-		<script src="./JS/inventoryManager.js"></script>
-		<script src="./JS/mealsManager.js"></script>
-		<script src="./JS/settingManager.js"></script>
-		<script src="./JS/main.js"></script>
-	</body>
+        <div class="utilBar">
+            <div role="button" id="NavInvBtn">Inventory</div>
+            <div role="button" id="NavNewItemBtn"><strong>+</strong></div>
+            <div role="button" id="NavCourseBtn">Courses</div>
+            <div
+                role="button"
+                id="BackBtn"
+                data-tooltip="Go Back"
+                data-placement="top"
+                hidden
+            >
+                &larr;
+            </div>
+        </div>
+
+        <script src="./Libs/dexie.min.js"></script>
+        <script src="./JS/db.js"></script>
+        <script src="./JS/inventoryManager.js"></script>
+        <script src="./JS/mealsManager.js"></script>
+        <script src="./JS/settingManager.js"></script>
+        <script src="./JS/main.js"></script>
+    </body>
 </html>
