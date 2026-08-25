@@ -1,9 +1,10 @@
-const InvModal = document.getElementById("InvFormModal");
-const IngredientForm = document.getElementById("IngredientForm");
-const IngredientName = document.getElementById("IngredientName");
-const IngredientQty = document.getElementById("IngredientQty");
-const IngredientUnit = document.getElementById("IngredientUnit");
-const IngredientStep = document.getElementById("IngredientStep");
+// Inventory DOM Elements
+const InvModal = $("InvFormModal"),
+    IngredientForm = $("IngredientForm"),
+    IngredientName = $("IngredientName"),
+    IngredientQty = $("IngredientQty"),
+    IngredientUnit = $("IngredientUnit"),
+    IngredientStep = $("IngredientStep");
 
 async function renderInv() {
 	try {
@@ -78,8 +79,6 @@ async function calculateInv(invId, action, stepVal = 1, unitVal = "") {
 	}
 }
 
-// Modal Code
-
 function addIngredientModal() {
 	IngredientForm.reset();
 	document.body.classList.add("modal-open");
@@ -123,7 +122,6 @@ InvModal.addEventListener("submit", async (e) => {
 
 	InvModal.close();
 });
-
 
 async function populateInventorySuggestions() {
     const dataList = document.getElementById("inventoryList");

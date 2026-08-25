@@ -1,3 +1,4 @@
+// Service Worker Registration
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         const isLivePreview = 
@@ -27,10 +28,11 @@ if ("serviceWorker" in navigator) {
     });
 }
 
+// Global App State
 let currentSelectedMeals = "";
 let currentView = null;
 
-// Element references
+// Element References
 const $ = (id) => document.getElementById(id);
 const MenuView = $("MenuView"),
     MealView = $("MealView"),
@@ -78,7 +80,6 @@ const showView = (targetView, pushState = true) => {
 history.replaceState({ view: "MenuView" }, "", "#MenuView");
 showView(MenuView, false);
 
-
 const descriptions = {
     Morning: "A list of your favorite morning meals!",
     Afternoon: "A list of your favorite afternoon meals!",
@@ -86,8 +87,8 @@ const descriptions = {
     Dessert: "A list of your favorite desserts!",
 };
 
+// History Navigation Listener
 window.addEventListener("popstate", (event) => {
-  
     const openModals = document.querySelectorAll("dialog[open]");
     if (openModals.length > 0) {
         openModals.forEach(modal => modal.close());
@@ -104,7 +105,7 @@ window.addEventListener("popstate", (event) => {
     }
 });
 
-// Event Listeners
+// App Event Listeners
 document.querySelectorAll(".Action").forEach((btn) => {
     btn.addEventListener("click", (e) => {
         const cat = e.currentTarget.dataset.categories.trim();
@@ -156,7 +157,6 @@ MealCatContainer.addEventListener("click", async (e) => {
         }
     }
 });
-
 
 InvView.addEventListener("click", async (e) => {
     const card = e.target.closest("article");
