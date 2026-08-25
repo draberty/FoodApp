@@ -1,5 +1,4 @@
 // settingsManager.js
-//AI has been used here
 
 const getSettingsModal = () => document.getElementById("SettingsModal");
 
@@ -34,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === modal) closeSettings();
     });
 
-    // Data Export (Web Share API for Mobile + Standard Download Fallback for Desktop)
+    // Data Export
     exportBtn?.addEventListener("click", async () => {
         try {
             const meals = await db.meals.toArray();
@@ -53,31 +52,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const fileName = `food-prep-backup-${new Date().toISOString().split("T")[0]}.json`;
             const jsonString = JSON.stringify(backupData, null, 2);
-            const file = new File([jsonString], fileName, { type: "application/json" });
+            
+            // Explicitly use text/plain for broader Web Share API compatibility on mobile
+            const file = new File([jsonString], fileName, { type: "text/plain" });
 
-            // Trigger Mobile Native Share Sheet if Supported
+            let sharedSuccessfully = false;
+
+            // Try Web Share API first
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({
-                    files: [file],
-                    title: "Food Prep Backup",
-                    text: "Here is your Food Prep database backup file.",
-                });
-            } else {
-                // Desktop / Standard Browser Download Fallback
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: "Food Prep Backup",
+                        text: "Here is your Food Prep database backup file.",
+                    });
+                    sharedSuccessfully = true;
+                } catch (shareErr) {
+                    // Ignore user cancelling the share modal
+                    if (shareErr.name === "AbortError") return;
+                    console.warn("Web Share failed, falling back to download:", shareErr);
+                }
+            }
+
+            // Fallback for Desktop & Unsupported Mobile WebViews
+            if (!sharedSuccessfully) {
                 const blob = new Blob([jsonString], { type: "application/json" });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
                 a.download = fileName;
+                
+                // Appending to body is required for mobile browsers
+                document.body.appendChild(a);
                 a.click();
-                URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
             }
         } catch (err) {
-            // Ignore user cancellation errors when closing system share sheets
-            if (err.name !== "AbortError") {
-                console.error("Export failed:", err);
-                alert("Failed to export data.");
-            }
+            console.error("Export failed:", err);
+            alert("Failed to export data.");
         }
     });
 
