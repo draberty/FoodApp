@@ -1,3 +1,4 @@
+// Add Meals
 let currentIngredients = [];
 
 const MealModal = document.getElementById("MealFormModal");
@@ -6,13 +7,53 @@ const MealId = document.getElementById("MealIdInput");
 const MealFormTitle = document.getElementById("MealFormTitle");
 
 const MealName = document.getElementById("MealName");
-const MealCat = document.getElementById("MealCategory");
 const MealSubCat = document.getElementById("MealSubCategory");
 const SidesAllowed = document.getElementById("SidesAllowed");
 const MealIngredients = document.getElementById("MealIngredients");
 const addIngredientBtn = document.getElementById("AddIngredientBtn");
 const ingredientList = document.getElementById("IngredientList");
 const allergenToggle = document.getElementById("allergenToggle");
+
+// Multi-Select Category Helpers
+function getSelectedCategories() {
+    const checkedBoxes = document.querySelectorAll('input[name="mealCategory"]:checked');
+    return Array.from(checkedBoxes).map((cb) => cb.value);
+}
+
+function setSelectedCategories(categoriesArray = []) {
+    const checkboxes = document.querySelectorAll('input[name="mealCategory"]');
+    checkboxes.forEach((cb) => {
+        cb.checked = categoriesArray.includes(cb.value);
+    });
+    updateCategorySummary();
+}
+
+function updateCategorySummary() {
+    const summary = document.getElementById("CategorySummary");
+    if (!summary) return;
+
+    const selected = getSelectedCategories();
+    if (selected.length === 0) {
+        summary.textContent = "Select categories...";
+    } else if (selected.length === 1) {
+        summary.textContent = selected[0];
+    } else {
+        summary.textContent = `${selected.length} categories selected`;
+    }
+}
+
+// Update summary text live as category checkboxes are toggled
+document.querySelectorAll('input[name="mealCategory"]').forEach((cb) => {
+    cb.addEventListener("change", updateCategorySummary);
+});
+
+// Auto-close details dropdown when clicking outside of it
+document.addEventListener("click", (e) => {
+    const dropdown = document.getElementById("CategoryDropdown");
+    if (dropdown && dropdown.hasAttribute("open") && !dropdown.contains(e.target)) {
+        dropdown.removeAttribute("open");
+    }
+});
 
 function renderIngredientChips() {
     ingredientList.innerHTML = currentIngredients
@@ -36,8 +77,10 @@ function addIngredients() {
     }
 }
 
+// Add via "+" button
 addIngredientBtn.addEventListener("click", addIngredients);
 
+// Add via Enter key inside input
 MealIngredients.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -45,10 +88,10 @@ MealIngredients.addEventListener("keydown", (e) => {
     }
 });
 
+// Remove Chip Delegation
 ingredientList.addEventListener("click", (e) => {
     if (e.target.classList.contains("remove-chip")) {
         const index = Number(e.target.dataset.index);
-
         currentIngredients.splice(index, 1);
         renderIngredientChips();
     }
@@ -56,99 +99,116 @@ ingredientList.addEventListener("click", (e) => {
 
 // Modal code
 
-function openAddMealModal(activeCategory) {
-	MealForm.reset();
-	MealId.value = "";
-	currentIngredients = [];
-	allergenToggle.checked = false;
-	renderIngredientChips();
-	populateInventorySuggestions();
+async function openAddMealModal(activeCategory) {
+    MealForm.reset();
+    MealId.value = "";
+    currentIngredients = [];
+    allergenToggle.checked = false;
+    renderIngredientChips();
 
-	const categorySelect = document.getElementById("MealCategory");
-	if (activeCategory) {
-		categorySelect.value = activeCategory;
-	} else {
-		categorySelect.selectedIndex = 0;
-	}
+    if (typeof populateInventorySuggestions === "function") {
+        await populateInventorySuggestions();
+    }
 
-	MealFormTitle.textContent = "Add Meal";
-	document.body.classList.add("modal-open");
-	MealModal.showModal();
+    if (activeCategory) {
+        setSelectedCategories([activeCategory]);
+    } else {
+        setSelectedCategories([]);
+    }
+
+    MealFormTitle.textContent = "Add Meal";
+    document.body.classList.add("modal-open");
+
+    MealModal.showModal();
 }
 
 async function openEditMealModal(mealId) {
-	const meal = await db.meals.get(Number(mealId));
+    const meal = await db.meals.get(Number(mealId));
 
-	if (!meal) return;
+    if (!meal) return;
 
-	MealId.value = meal.id;
-	populateInventorySuggestions();
+    MealId.value = meal.id;
 
-	MealName.value = meal.name || "";
-	MealCat.value = Array.isArray(meal.categories)
-		? meal.categories[0] || ""
-		: meal.categories || "";
-	MealSubCat.value = meal.subCategory || "";
-	SidesAllowed.value = meal.sidesAllowed || 0;
-	allergenToggle.checked = Boolean(meal.isAllergen);
+    if (typeof populateInventorySuggestions === "function") {
+        await populateInventorySuggestions();
+    }
 
-	if (Array.isArray(meal.ingredients)) {
-		currentIngredients = [...meal.ingredients];
-	} else {
-		currentIngredients = [];
-	}
+    MealName.value = meal.name || "";
+    MealSubCat.value = meal.subCategory || "";
+    SidesAllowed.value = meal.sidesAllowed || 0;
+    allergenToggle.checked = Boolean(meal.isAllergen);
 
-	renderIngredientChips();
+    const categories = Array.isArray(meal.categories)
+        ? meal.categories
+        : meal.categories
+        ? [meal.categories]
+        : [];
+    setSelectedCategories(categories);
 
-	MealFormTitle.textContent = "Edit Meal";
+    if (Array.isArray(meal.ingredients)) {
+        currentIngredients = [...meal.ingredients];
+    } else {
+        currentIngredients = [];
+    }
 
-	document.body.classList.add("modal-open");
-	MealModal.showModal();
+    renderIngredientChips();
+
+    MealFormTitle.textContent = "Edit Meal";
+
+    document.body.classList.add("modal-open");
+
+    MealModal.showModal();
 }
 
 const closeMealBtn = MealModal.querySelector(".CloseModalBtn");
 closeMealBtn?.addEventListener("click", () => {
-	MealModal.close();
+    MealModal.close();
 });
 
 MealModal.addEventListener("close", () => {
-	document.body.classList.remove("modal-open");
-	MealForm.reset();
-	MealId.value = "";
-	currentIngredients = [];
-	renderIngredientChips();
+    document.body.classList.remove("modal-open");
+    MealForm.reset();
+    MealId.value = "";
+    currentIngredients = [];
+    setSelectedCategories([]);
+    renderIngredientChips();
 });
 
 MealForm.addEventListener("submit", async (e) => {
-	e.preventDefault();
+    e.preventDefault();
 
-	const mealId = MealId.value;
-	const mealName = MealName.value;
-	const mealCat = MealCat.value;
-	const mealSubCat = MealSubCat.value;
-	const sides = Number(SidesAllowed.value);
-	const allergen = allergenToggle.checked;
+    const mealId = MealId.value;
+    const mealName = MealName.value;
+    const selectedCats = getSelectedCategories();
+    const mealSubCat = MealSubCat.value;
+    const sides = Number(SidesAllowed.value);
+    const allergen = allergenToggle.checked;
 
-	const mealData = {
-		name: mealName.trim(),
-		categories: [mealCat],
-		subCategory: mealSubCat.trim(),
-		ingredients: [...currentIngredients],
-		sidesAllowed: sides || 0,
-		isAllergen: allergen,
-	};
+    if (selectedCats.length === 0) {
+        alert("Please select at least one category.");
+        return;
+    }
 
-	if (mealId) {
-		await db.meals.update(Number(mealId), mealData);
-		alert("Your Meal Has been Updated!");
-	} else {
-		await db.meals.add(mealData);
-		alert("New Meal Has been Added");
-	}
+    const mealData = {
+        name: mealName.trim(),
+        categories: selectedCats,
+        subCategory: mealSubCat.trim(),
+        ingredients: [...currentIngredients],
+        sidesAllowed: sides || 0,
+        isAllergen: allergen,
+    };
 
-	if (typeof renderMeals === "function") {
-		await renderMeals(currentSelectedMeals);
-	}
+    if (mealId) {
+        await db.meals.update(Number(mealId), mealData);
+        alert("Your Meal Has been Updated!");
+    } else {
+        await db.meals.add(mealData);
+        alert("New Meal Has been Added");
+    }
 
-	MealModal.close();
+    if (typeof renderMeals === "function") {
+        await renderMeals(currentSelectedMeals);
+    }
+
+    MealModal.close();
 });

@@ -131,7 +131,6 @@ async function populateInventorySuggestions() {
 
     try {
         const inventoryItems = await db.inventory.toArray();
-        
         dataList.innerHTML = inventoryItems
             .map(item => `<option value="${item.name}">${item.qty ? `(${item.qty} ${item.unit || ''})` : ''}</option>`)
             .join("");

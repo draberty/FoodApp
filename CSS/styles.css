@@ -31,6 +31,17 @@ body.modal-open {
 	border-radius: 0;
 }
 
+details.dropdown summary::-webkit-details-marker,
+details.dropdown summary::marker {
+    display: none !important;
+    content: "" !important;
+}
+
+#MealIngredients::-webkit-calendar-picker-indicator {
+    display: none !important;
+    opacity: 0;
+}
+
 /* 2. MEAL CARDS & CONTAINERS */
 
 .cards-wrapper {

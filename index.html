@@ -85,14 +85,48 @@
 							required
 						/>
 
-						<label for="MealCategory">Category</label>
-						<select id="MealCategory" name="category" required>
-							<option value="" disabled selected>Select a category...</option>
-							<option value="Morning">Morning</option>
-							<option value="Afternoon">Afternoon</option>
-							<option value="Snacky">Snacky</option>
-							<option value="Dessert">Dessert</option>
-						</select>
+						<label>Category</label>
+						<details class="dropdown" id="CategoryDropdown">
+							<summary id="CategorySummary">Select categories...</summary>
+							<ul>
+								<li>
+									<label>
+										<input
+											type="checkbox"
+											name="mealCategory"
+											value="Morning"
+										/>
+										Morning
+									</label>
+								</li>
+								<li>
+									<label>
+										<input
+											type="checkbox"
+											name="mealCategory"
+											value="Afternoon"
+										/>
+										Afternoon
+									</label>
+								</li>
+								<li>
+									<label>
+										<input type="checkbox" name="mealCategory" value="Snacky" />
+										Snacky
+									</label>
+								</li>
+								<li>
+									<label>
+										<input
+											type="checkbox"
+											name="mealCategory"
+											value="Dessert"
+										/>
+										Dessert
+									</label>
+								</li>
+							</ul>
+						</details>
 
 						<label for="MealSubCategory">Subcategory</label>
 						<input type="text" id="MealSubCategory" />
@@ -102,14 +136,14 @@
 						<div id="IngredientList" class="ingredient-chip-container"></div>
 
 						<div class="ingredient-input-group">
+							<datalist id="inventoryList"></datalist>
 							<input
 								type="text"
 								id="MealIngredients"
 								list="inventoryList"
-								placeholder="Add an ingredient..."
-								autocomplete="off"
+								placeholder="Search or type an ingredient..."
+								autocomplete="on"
 							/>
-							<datalist id="inventoryList"></datalist>
 							<button type="button" id="AddIngredientBtn">+</button>
 						</div>
 
