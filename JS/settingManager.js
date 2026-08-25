@@ -33,66 +33,60 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === modal) closeSettings();
     });
 
- // Data Export (Mobile Native Share Sheet via Blob URL)
-exportBtn?.addEventListener("click", async () => {
-    try {
-        const meals = await db.meals.toArray();
-        const inventory = await db.inventory.toArray();
-        const sides = await db.sides.toArray();
-        const course = await db.course.toArray();
+    // Data Export (Mobile Native File Share vs Desktop Direct Download)
+    exportBtn?.addEventListener("click", async () => {
+        try {
+            const meals = await db.meals.toArray();
+            const inventory = await db.inventory.toArray();
+            const sides = await db.sides.toArray();
+            const course = await db.course.toArray();
 
-        const backupData = {
-            version: 1,
-            exportedAt: new Date().toISOString(),
-            meals,
-            inventory,
-            sides,
-            course,
-        };
+            const backupData = {
+                version: 1,
+                exportedAt: new Date().toISOString(),
+                meals,
+                inventory,
+                sides,
+                course,
+            };
 
-        const fileName = `food-prep-backup-${new Date().toISOString().split("T")[0]}.json`;
-        const jsonString = JSON.stringify(backupData, null, 2);
+            const fileName = `food-prep-backup-${new Date().toISOString().split("T")[0]}.json`;
+            const jsonString = JSON.stringify(backupData, null, 2);
 
-        // 1. Create a downloadable Blob and object URL
-        const blob = new Blob([jsonString], { type: "application/json" });
-        const fileUrl = URL.createObjectURL(blob);
+            const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
-        // 2. Mobile Web Share API (Sharing Title + URL opens Native Share Sheet)
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: "Food Prep Backup",
-                    text: `Backup file: ${fileName}`,
-                    url: fileUrl,
-                });
-                
-                // Cleanup URL after sharing
-                setTimeout(() => URL.revokeObjectURL(fileUrl), 2000);
-                return;
-            } catch (shareErr) {
-                // Ignore user cancelling the share modal
-                if (shareErr.name === "AbortError") {
-                    URL.revokeObjectURL(fileUrl);
+            // 1. Mobile Native Share Sheet (Shares actual file payload)
+            if (isMobile && navigator.share) {
+                const file = new File([jsonString], fileName, { type: "application/json" });
+
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: "Food Prep Backup",
+                    });
                     return;
+                } catch (shareErr) {
+                    if (shareErr.name === "AbortError") return;
+                    console.warn("Mobile share sheet failed or was dismissed, falling back to direct download:", shareErr);
                 }
-                console.warn("Web Share failed, attempting direct download:", shareErr);
             }
+
+            // 2. Desktop Direct File Download
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (err) {
+            console.error("Export failed:", err);
+            alert("Failed to export data.");
         }
-
-        // 3. Desktop / Standard Download Fallback
-        const a = document.createElement("a");
-        a.href = fileUrl;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        setTimeout(() => URL.revokeObjectURL(fileUrl), 1000);
-    } catch (err) {
-        console.error("Export failed:", err);
-        alert("Failed to export data.");
-    }
-});
+    });
 
     // Data Import (JSON -> Dexie Database)
     importInput?.addEventListener("change", (e) => {
