@@ -13,6 +13,7 @@ const MealIngredients = document.getElementById("MealIngredients");
 const addIngredientBtn = document.getElementById("AddIngredientBtn");
 const ingredientList = document.getElementById("IngredientList");
 const allergenToggle = document.getElementById("allergenToggle");
+const categoryDropdown = document.getElementById("CategoryDropdown");
 
 // Multi-Select Category Helpers
 function getSelectedCategories() {
@@ -42,16 +43,15 @@ function updateCategorySummary() {
     }
 }
 
-// Update summary text live as category checkboxes are toggled
-document.querySelectorAll('input[name="mealCategory"]').forEach((cb) => {
-    cb.addEventListener("change", updateCategorySummary);
+categoryDropdown?.addEventListener("change", (e) => {
+    if (e.target.name === "mealCategory") {
+        updateCategorySummary();
+    }
 });
 
-// Auto-close details dropdown when clicking outside of it
 document.addEventListener("click", (e) => {
-    const dropdown = document.getElementById("CategoryDropdown");
-    if (dropdown && dropdown.hasAttribute("open") && !dropdown.contains(e.target)) {
-        dropdown.removeAttribute("open");
+    if (categoryDropdown && categoryDropdown.hasAttribute("open") && !categoryDropdown.contains(e.target)) {
+        categoryDropdown.removeAttribute("open");
     }
 });
 
@@ -77,10 +77,8 @@ function addIngredients() {
     }
 }
 
-// Add via "+" button
 addIngredientBtn.addEventListener("click", addIngredients);
 
-// Add via Enter key inside input
 MealIngredients.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -88,7 +86,6 @@ MealIngredients.addEventListener("keydown", (e) => {
     }
 });
 
-// Remove Chip Delegation
 ingredientList.addEventListener("click", (e) => {
     if (e.target.classList.contains("remove-chip")) {
         const index = Number(e.target.dataset.index);
@@ -105,6 +102,7 @@ async function openAddMealModal(activeCategory) {
     currentIngredients = [];
     allergenToggle.checked = false;
     renderIngredientChips();
+    if (categoryDropdown) categoryDropdown.removeAttribute("open");
 
     if (typeof populateInventorySuggestions === "function") {
         await populateInventorySuggestions();
@@ -128,6 +126,7 @@ async function openEditMealModal(mealId) {
     if (!meal) return;
 
     MealId.value = meal.id;
+    if (categoryDropdown) categoryDropdown.removeAttribute("open");
 
     if (typeof populateInventorySuggestions === "function") {
         await populateInventorySuggestions();
@@ -172,6 +171,7 @@ MealModal.addEventListener("close", () => {
     currentIngredients = [];
     setSelectedCategories([]);
     renderIngredientChips();
+    if (categoryDropdown) categoryDropdown.removeAttribute("open");
 });
 
 MealForm.addEventListener("submit", async (e) => {
