@@ -13,6 +13,7 @@ const ASSETS_TO_CACHE = [
     "JS/inventoryManager.js",
     "JS/mealsManager.js",
     "JS/main.js",
+    "JS/settingManager.js",
 ];
 
 // Install Event

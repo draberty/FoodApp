@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === modal) closeSettings();
     });
 
-    // Data Export
+// --- DATA EXPORT ---
     exportBtn?.addEventListener("click", async () => {
         try {
             const meals = await db.meals.toArray();
@@ -49,35 +49,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 course,
             };
 
+            const dateStr = new Date().toISOString().split("T")[0];
             const jsonString = JSON.stringify(backupData, null, 2);
-            const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+            const jsonFileName = `food-prep-backup-${dateStr}.json`;
+            
+            // Create a JSON File instance
+            const jsonFile = new File([jsonString], jsonFileName, { type: "application/json" });
 
-            if (isMobile && navigator.share) {
-                // 1. Mobile: Name file with .txt and text/plain MIME type so Web Share accepts it
-                const mobileFileName = `food-prep-backup-${new Date().toISOString().split("T")[0]}.txt`;
-                const file = new File([jsonString], mobileFileName, { type: "text/plain" });
-
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    try {
-                        await navigator.share({
-                            files: [file],
-                            title: "Food Prep Backup",
-                        });
-                        return;
-                    } catch (shareErr) {
-                        if (shareErr.name === "AbortError") return;
-                        console.warn("Mobile share sheet failed, falling back to direct download:", shareErr);
-                    }
+            // 1. Try Native Web Share API (Mobile/Supported Platforms)
+            if (navigator.canShare && navigator.canShare({ files: [jsonFile] })) {
+                try {
+                    await navigator.share({
+                        files: [jsonFile],
+                        title: "Food Prep Backup",
+                        text: "Here is your Food Prep database backup JSON file.",
+                    });
+                    return; // Exit after successful share
+                } catch (shareErr) {
+                    // Ignore user cancellation (dismissing share sheet)
+                    if (shareErr.name === "AbortError") return;
+                    console.warn("Native share sheet failed, falling back to direct download:", shareErr);
                 }
             }
 
-            // 2. Desktop Fallback: Standard .json file download
-            const desktopFileName = `food-prep-backup-${new Date().toISOString().split("T")[0]}.json`;
+            // 2. Direct File Download Fallback (Desktop / Unsupported Browsers)
             const blob = new Blob([jsonString], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = desktopFileName;
+            a.download = jsonFileName;
             
             document.body.appendChild(a);
             a.click();
