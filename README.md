@@ -1,6 +1,9 @@
+# WORK IN PROGRESS
+
 A offline first Meal planner and Menu tracker.
 
-You can store meals, sides, even ingredients. 
+You can store meals, sides, even ingredients.
+
 
 This is a app/site to make planning meals easier. 
 
