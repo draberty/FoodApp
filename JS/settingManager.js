@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === modal) closeSettings();
     });
 
-// --- DATA EXPORT ---
+    // --- DATA EXPORT ---
     exportBtn?.addEventListener("click", async () => {
         try {
             const meals = await db.meals.toArray();
@@ -51,28 +51,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const dateStr = new Date().toISOString().split("T")[0];
             const jsonString = JSON.stringify(backupData, null, 2);
-            const jsonFileName = `food-prep-backup-${dateStr}.json`;
-            
-            // Create a JSON File instance
-            const jsonFile = new File([jsonString], jsonFileName, { type: "application/json" });
+            const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
 
-            // 1. Try Native Web Share API (Mobile/Supported Platforms)
-            if (navigator.canShare && navigator.canShare({ files: [jsonFile] })) {
-                try {
-                    await navigator.share({
-                        files: [jsonFile],
-                        title: "Food Prep Backup",
-                        text: "Here is your Food Prep database backup JSON file.",
-                    });
-                    return; // Exit after successful share
-                } catch (shareErr) {
-                    // Ignore user cancellation (dismissing share sheet)
-                    if (shareErr.name === "AbortError") return;
-                    console.warn("Native share sheet failed, falling back to direct download:", shareErr);
+            // 1. Mobile Native Share Sheet via .txt File Payload
+            if (isMobile && navigator.share) {
+                const txtFileName = `food-prep-backup-${dateStr}.txt`;
+                const txtFile = new File([jsonString], txtFileName, { type: "text/plain" });
+
+                if (navigator.canShare && navigator.canShare({ files: [txtFile] })) {
+                    try {
+                        await navigator.share({
+                            files: [txtFile],
+                            title: "Food Prep Backup",
+                            text: "Here is your Food Prep database backup.",
+                        });
+                        return;
+                    } catch (shareErr) {
+                        if (shareErr.name === "AbortError") return;
+                        console.warn("Mobile share sheet failed, falling back to direct download:", shareErr);
+                    }
                 }
             }
 
-            // 2. Direct File Download Fallback (Desktop / Unsupported Browsers)
+            // 2. Desktop Direct .json Download Fallback
+            const jsonFileName = `food-prep-backup-${dateStr}.json`;
             const blob = new Blob([jsonString], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
@@ -90,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Data Import (Reads both .json and .txt seamlessly)
+    // --- DATA IMPORT (Handles both .json and .txt backup files) ---
     importInput?.addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -98,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
-                // JSON.parse converts the text back into an object regardless of .txt or .json extension
+                // Parses JSON data regardless of whether the file extension is .json or .txt
                 const data = JSON.parse(event.target.result);
 
                 if (!data.meals || !data.inventory || !data.sides || !data.course) {
@@ -124,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (err) {
                 console.error("Import failed:", err);
-                alert("Failed to import backup file. Ensure it is a valid backup file.");
+                alert("Failed to import backup file. Ensure it is a valid backup file (.json or .txt).");
             } finally {
                 e.target.value = "";
             }
