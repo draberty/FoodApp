@@ -82,19 +82,19 @@ function applyTheme(themeMode, accentColor) {
 	if (isDark) {
 		root.style.setProperty(
 			"--pico-background-color",
-			`var(--pico-color-${color}-950)`,
-		);
-		root.style.setProperty(
-			"--pico-card-background-color",
 			`var(--pico-color-${color}-900)`,
 		);
 		root.style.setProperty(
-			"--pico-card-sectioning-background-color",
+			"--pico-card-background-color",
 			`var(--pico-color-${color}-850)`,
 		);
 		root.style.setProperty(
+			"--pico-card-sectioning-background-color",
+			`var(--pico-color-${color}-800)`,
+		);
+		root.style.setProperty(
 			"--pico-form-element-background-color",
-			`var(--pico-color-${color}-950)`,
+			`var(--pico-color-${color}-900)`,
 			"important",
 		);
 		root.style.setProperty(
