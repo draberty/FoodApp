@@ -2,11 +2,11 @@ const $ = (id) => document.getElementById(id);
 
 // Inventory DOM Elements
 const InvModal = $("InvFormModal"),
-    IngredientForm = $("IngredientForm"),
-    IngredientName = $("IngredientName"),
-    IngredientQty = $("IngredientQty"),
-    IngredientUnit = $("IngredientUnit"),
-    IngredientStep = $("IngredientStep");
+	IngredientForm = $("IngredientForm"),
+	IngredientName = $("IngredientName"),
+	IngredientQty = $("IngredientQty"),
+	IngredientUnit = $("IngredientUnit"),
+	IngredientStep = $("IngredientStep");
 
 async function renderInv() {
 	try {
@@ -126,15 +126,18 @@ InvModal.addEventListener("submit", async (e) => {
 });
 
 async function populateInventorySuggestions() {
-    const dataList = document.getElementById("inventoryList");
-    if (!dataList) return;
+	const dataList = document.getElementById("inventoryList");
+	if (!dataList) return;
 
-    try {
-        const inventoryItems = await db.inventory.toArray();
-        dataList.innerHTML = inventoryItems
-            .map(item => `<option value="${item.name}">${item.qty ? `(${item.qty} ${item.unit || ''})` : ''}</option>`)
-            .join("");
-    } catch (err) {
-        console.error("Failed to fetch inventory suggestions:", err);
-    }
+	try {
+		const inventoryItems = await db.inventory.toArray();
+		dataList.innerHTML = inventoryItems
+			.map(
+				(item) =>
+					`<option value="${item.name}">${item.qty ? `(${item.qty} ${item.unit || ""})` : ""}</option>`,
+			)
+			.join("");
+	} catch (err) {
+		console.error("Failed to fetch inventory suggestions:", err);
+	}
 }

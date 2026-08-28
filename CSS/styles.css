@@ -1,6 +1,8 @@
 /* 1. LAYOUT & UTILITIES */
-:root {
-	color-scheme: dark;
+html,
+body {
+	background-color: var(--pico-background-color);
+	color: var(--pico-color);
 }
 
 main.container-fluid {
@@ -18,7 +20,8 @@ body.modal-open {
 	z-index: 1000;
 	bottom: 0;
 	left: 0;
-	border-top: 1px solid var(--pico-primary-inverse);
+	background-color: var(--pico-card-background-color);
+	border-top: 1px solid var(--pico-border-color);
 }
 
 .utilBar [role="button"] {
@@ -33,48 +36,44 @@ body.modal-open {
 
 details.dropdown summary::-webkit-details-marker,
 details.dropdown summary::marker {
-    display: none !important;
-    content: "" !important;
+	display: none !important;
+	content: "" !important;
 }
 
 #MealIngredients::-webkit-calendar-picker-indicator {
-    display: none !important;
-    opacity: 0;
+	display: none !important;
+	opacity: 0;
 }
 
-/* Quick Settings Header Positioning */
 .view-header {
-    position: relative;
-    padding-right: 3rem; /* Prevents long titles from overlapping the button */
+	position: relative;
+	padding-right: 3rem;
 }
 
 .top-actions {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 }
 
-/* Round Quick-Settings Style Icon Button */
 .icon-circle-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    margin: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: 1rem;
-    cursor: pointer;
-    line-height: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	margin: 0;
+	border-radius: 50%;
+	background-color: transparent;
+	border: 0;
+	font-size: 1rem;
+	cursor: pointer;
+	line-height: 1;
 }
-
-/* 2. MEAL CARDS & CONTAINERS */
 
 .cards-wrapper {
 	display: flex;
@@ -87,6 +86,9 @@ details.dropdown summary::marker {
 	margin-bottom: 0;
 	display: flex;
 	flex-direction: column;
+	background-color: var(--pico-card-background-color) !important;
+	border: 1px solid var(--pico-border-color);
+	overflow: hidden;
 }
 
 /* Card Header */
@@ -95,8 +97,9 @@ details.dropdown summary::marker {
 	justify-content: space-between;
 	align-items: center;
 	gap: 0.5rem;
-	padding-bottom: 0.5rem;
-	border-bottom: 1px solid var(--pico-muted-border-color, #e2e8f0);
+	padding: 0.75rem 1rem;
+	background-color: var(--pico-card-sectioning-background-color) !important;
+	border-bottom: 1px solid var(--pico-border-color);
 }
 
 .card-title {
@@ -154,7 +157,7 @@ details.dropdown summary::marker {
 }
 
 .ingredient-input-group input {
-	margin-bottom: 0; /* Prevents Pico bottom spacing */
+	margin-bottom: 0;
 }
 
 .ingredient-input-group button {
@@ -182,4 +185,29 @@ details.dropdown summary::marker {
 .allergen-badge::before {
 	content: "⚠️";
 	font-size: 0.7rem;
+}
+
+/* 5. FORM CONTROLS & DROPDOWN OVERRIDES */
+
+input,
+select,
+textarea {
+	background-color: var(--pico-form-element-background-color) !important;
+	border-color: var(
+		--pico-form-element-border-color,
+		var(--pico-border-color)
+	) !important;
+	color: var(--pico-color, inherit) !important;
+}
+
+select option,
+optgroup {
+	background-color: var(--pico-card-background-color) !important;
+	color: var(--pico-color, inherit) !important;
+}
+
+select option:checked,
+select option:hover {
+	background-color: var(--pico-primary-background) !important;
+	color: var(--pico-primary-inverse) !important;
 }
