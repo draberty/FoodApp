@@ -20,7 +20,7 @@ if ("serviceWorker" in navigator) {
 		}
 
 		navigator.serviceWorker
-			.register("./sw.js")
+			.register("../sw.js")
 			.then((registration) => {
 				console.log(
 					"[Service Worker] Registered with scope:",
@@ -144,10 +144,10 @@ MealCatContainer.addEventListener("click", async (e) => {
 	const mealId = Number(card.dataset.mealId);
 	const target = e.target;
 
-	if (target.classList.contains("editBtn")) {
+	if (target.classList.contains("addToCourseBtn")) {
+		openAddCourseModal(mealId);
+	} else if (target.classList.contains("editBtn")) {
 		openEditMealModal(mealId);
-	} else if (target.classList.contains("choose-sides-btn")) {
-		console.log("Choose sides for meal ID:", mealId);
 	} else if (target.classList.contains("deleteBtn")) {
 		const mealName =
 			card.querySelector(".meal-title")?.textContent || "this meal";

@@ -113,11 +113,12 @@ details.dropdown summary::marker {
 	gap: 0.5rem;
 	align-items: stretch;
 	margin-top: auto;
+	gap: 1rem;
 }
 
 .card-actions [role="button"] {
 	flex: 1;
-	margin-bottom: 0;
+	margin: 0 !important;
 	text-align: center;
 	display: flex;
 	align-items: center;
@@ -210,4 +211,49 @@ select option:checked,
 select option:hover {
 	background-color: var(--pico-primary-background) !important;
 	color: var(--pico-primary-inverse) !important;
+}
+
+.daySelector {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.day-pill {
+	flex: 1;
+	justify-items: center;
+	text-align: center;
+	background-color: var(--pico-form-element-background-color);
+	padding: 0.5rem;
+	border-radius: var(--pico-border-radius);
+}
+
+.daySelector input[type="checkbox"] {
+	display: none;
+}
+
+.day-pill input[type="checkbox"]:checked + span,
+.day-pill:has(input[type="checkbox"]:checked) {
+	background-color: var(--pico-form-element-selected-background-color);
+	color: var(--pico-primary-inverse);
+}
+
+.day-pill:hover {
+	background-color: var(--pico-primary-hover);
+}
+
+#ChooseSidesContainer {
+	display: grid;
+	grid-template-columns: auto auto;
+	gap: 1rem;
+}
+
+#ChooseSidesContainer article {
+	display: grid !important;
+	margin-bottom: 0;
+}
+
+.SidesCheckBox {
+	aspect-ratio: 1/1;
 }

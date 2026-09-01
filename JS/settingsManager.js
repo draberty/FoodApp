@@ -110,6 +110,10 @@ function applyTheme(themeMode, accentColor) {
 			"--pico-muted-border-color",
 			`var(--pico-color-${color}-850)`,
 		);
+		root.style.setProperty(
+			"--pico-form-element-selected-background-color",
+			`var(--pico-color-${color}-550)`,
+		);
 		root.style.setProperty("--pico-icon-color", "#ffffff");
 		root.style.setProperty("--pico-color", primaryText);
 	} else {
@@ -142,6 +146,10 @@ function applyTheme(themeMode, accentColor) {
 		root.style.setProperty(
 			"--pico-muted-border-color",
 			`var(--pico-color-${color}-300)`,
+		);
+		root.style.setProperty(
+			"--pico-form-element-selected-background-color",
+			`var(--pico-color-${color}-450)`,
 		);
 		root.style.setProperty("--pico-icon-color", primaryText);
 		root.style.setProperty("--pico-color", primaryText);

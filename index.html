@@ -202,7 +202,7 @@
 							id="IngredientName"
 							name="name"
 							autocomplete="on"
-							placeholder="Enter a name..."
+							placeholder="Enter a ingredient name..."
 							required
 						/>
 
@@ -247,7 +247,94 @@
 			</dialog>
 
 			<dialog id="CourseCreatorModal">
-				<article></article>
+				<article>
+					<header>
+						<button
+							aria-label="Close"
+							rel="prev"
+							class="CloseModalBtn"
+						></button>
+						<h3>Create Course</h3>
+					</header>
+
+					<form id="CourseCreatorForm">
+						<div id="ChooseSidesContainer">
+							<!-- Append auto gen sides here. -->
+						</div>
+
+						<div class="FormTab">
+							<label for="CourseName">Course Name</label>
+							<input
+								type="text"
+								id="CourseName"
+								name="name"
+								autocomplete="on"
+								placeholder="Enter a course name..."
+								required
+							/>
+
+							<!-- Auto Fill name and Meal id for saving -->
+							<label for="CourseMeal">Meal</label>
+							<input type="hidden" id="CourseMealId" value="" />
+							<input type="text" id="CourseMeal" value="" disabled />
+
+							<label for="CourseSides">Sides</label>
+							<input type="text" id="CourseSides" value="" disabled />
+						</div>
+
+						<div class="FormTab">
+							<label>Select Days</label>
+							<div class="daySelector">
+								<label class="day-pill">
+									<input type="checkbox" name="days" value="Sun" />
+									<span>S</span>
+								</label>
+								<label class="day-pill">
+									<input type="checkbox" name="days" value="Mon" />
+									<span>M</span>
+								</label>
+								<label class="day-pill">
+									<input type="checkbox" name="days" value="Tue" />
+									<span>T</span>
+								</label>
+								<label class="day-pill">
+									<input type="checkbox" name="days" value="Wed" />
+									<span>W</span>
+								</label>
+								<label class="day-pill">
+									<input type="checkbox" name="days" value="Thu" />
+									<span>T</span>
+								</label>
+								<label class="day-pill">
+									<input type="checkbox" name="days" value="Fri" />
+									<span>F</span>
+								</label>
+								<label class="day-pill">
+									<input type="checkbox" name="days" value="Sat" />
+									<span>S</span>
+								</label>
+							</div>
+
+
+							<label for="CourseTime">Time</label>
+							<input type="time" id="CourseTime" name="time" required />
+						</div>
+
+
+					</form>
+
+					<footer>
+						<div class="card-actions">
+							<div role="button" id="prevBtn" onclick="nextPrev(-1)">
+								Previous
+							</div>
+							<div role="button" id="nextBtn" onclick="nextPrev(1)">Next</div>
+							<div role="button" type="submit" id="saveCourseBtn">
+								Save Course
+							</div>
+						</div>
+					</footer>
+				</article>
 			</dialog>
 
 			<dialog id="SettingsModal">
@@ -300,7 +387,7 @@
 
 					<!-- Data Backup & Import Section -->
 					<hr />
-					<section>
+					<section class="grid">
 						<h4>Data Backup</h4>
 						<button id="ExportBtn">Export Backup</button>
 						<input type="file" id="ImportInput" accept=".json,.txt" hidden />
@@ -334,6 +421,7 @@
 		<script src="./JS/db.js"></script>
 		<script src="./JS/inventoryManager.js"></script>
 		<script src="./JS/mealsManager.js"></script>
+		<script src="./JS/assembleCourse.js"></script>
 		<script src="./JS/settingsManager.js"></script>
 		<script src="./JS/main.js"></script>
 	</body>

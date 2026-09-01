@@ -1,4 +1,6 @@
+// Helper:
 const $ = (id) => document.getElementById(id);
+
 
 // Inventory DOM Elements
 const InvModal = $("InvFormModal"),

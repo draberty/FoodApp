@@ -1,4 +1,4 @@
-const CACHE_NAME = "meal-tracker-v2";
+const CACHE_NAME = "meal-tracker-v2.1";
 
 const ASSETS_TO_CACHE = [
 	"./",
@@ -15,6 +15,7 @@ const ASSETS_TO_CACHE = [
 	"JS/mealsManager.js",
 	"JS/main.js",
 	"JS/settingsManager.js",
+	"JS/assembleCourse.js",
 ];
 
 // Install Event

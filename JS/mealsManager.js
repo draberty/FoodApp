@@ -40,7 +40,6 @@ async function renderMeals(categories) {
 			<p><strong>Ingredients:</strong> ${Array.isArray(meal.ingredients) ? meal.ingredients.join(", ") : meal.ingredients}</p>
 			<p><strong>Sides Allowed:</strong> ${meal.sidesAllowed}</p>
 			<div class="card-actions">
-			${meal.sidesAllowed > 0 ? `<div role="button" class="choose-sides-btn chooseSides-${meal.id}">Choose sides</div>` : ""}
 			<div role="button" class="addToCourseBtn">Add Meal</div>
 			<div role="button" class="editBtn">Edit</div>
 			<div role="button" class="deleteBtn">Delete</div>
