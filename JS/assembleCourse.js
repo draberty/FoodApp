@@ -173,6 +173,11 @@ async function openAddCourseModal(mealId) {
 	CourseCreatorModal.showModal();
 }
 
+const saveCourseBtn = document.getElementById("saveCourseBtn");
+saveCourseBtn?.addEventListener("click", () => {
+    CourseCreatorForm.requestSubmit(); // Triggers the form's submit event handler safely
+});
+
 CourseCreatorModal.addEventListener("submit", async (e) => {
 	e.preventDefault();
 

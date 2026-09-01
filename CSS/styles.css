@@ -191,7 +191,6 @@ details.dropdown summary::marker {
 /* 5. FORM CONTROLS & DROPDOWN OVERRIDES */
 
 input,
-select,
 textarea {
 	background-color: var(--pico-form-element-background-color) !important;
 	border-color: var(
@@ -199,18 +198,6 @@ textarea {
 		var(--pico-border-color)
 	) !important;
 	color: var(--pico-color, inherit) !important;
-}
-
-select option,
-optgroup {
-	background-color: var(--pico-card-background-color) !important;
-	color: var(--pico-color, inherit) !important;
-}
-
-select option:checked,
-select option:hover {
-	background-color: var(--pico-primary-background) !important;
-	color: var(--pico-primary-inverse) !important;
 }
 
 .daySelector {

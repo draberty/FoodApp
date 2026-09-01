@@ -64,9 +64,9 @@ function applyTheme(themeMode, accentColor) {
 		: `var(--pico-color-${color}-100)`;
 	const primaryHover = `var(--pico-color-${color}-450)`;
 	const primaryActive = `var(--pico-color-${color}-400)`;
-
 	const primaryText = isDark ? "#ffffff" : "#000000";
 
+	// Base interactive primary styles
 	root.style.setProperty("--pico-primary", primary);
 	root.style.setProperty("--pico-primary-background", primary);
 	root.style.setProperty("--pico-primary-border", primary);
@@ -114,6 +114,28 @@ function applyTheme(themeMode, accentColor) {
 			"--pico-form-element-selected-background-color",
 			`var(--pico-color-${color}-550)`,
 		);
+
+		root.style.setProperty(
+			"--pico-dropdown-background-color",
+			`var(--pico-color-${color}-900)`,
+		);
+		root.style.setProperty(
+			"--pico-dropdown-color",
+			`var(--pico-color-${color}-200)`,
+		);
+		root.style.setProperty(
+			"--pico-dropdown-hover-background-color",
+			`var(--pico-primary-hover-background)`,
+		);
+		root.style.setProperty(
+			"--pico-dropdown-border-color",
+			`var(--pico-color-${color}-800)`,
+		);
+
+		root.style.setProperty(
+			"--pico-form-element-active-background-color",
+			`var(--pico-form-element-background-color)`,
+		);
 		root.style.setProperty("--pico-icon-color", "#ffffff");
 		root.style.setProperty("--pico-color", primaryText);
 	} else {
@@ -150,6 +172,28 @@ function applyTheme(themeMode, accentColor) {
 		root.style.setProperty(
 			"--pico-form-element-selected-background-color",
 			`var(--pico-color-${color}-450)`,
+		);
+
+		root.style.setProperty(
+			"--pico-dropdown-background-color",
+			`var(--pico-color-${color}-100)`,
+		);
+		root.style.setProperty(
+			"--pico-dropdown-color",
+			`var(--pico-color-${color}-800)`,
+		);
+		root.style.setProperty(
+			"--pico-dropdown-hover-background-color",
+			`var(--pico-primary-hover-background)`,
+		);
+		root.style.setProperty(
+			"--pico-dropdown-border-color",
+			`var(--pico-color-${color}-400)`,
+		);
+
+		root.style.setProperty(
+			"--pico-form-element-active-background-color",
+			`var(--pico-form-element-background-color)`,
 		);
 		root.style.setProperty("--pico-icon-color", primaryText);
 		root.style.setProperty("--pico-color", primaryText);
