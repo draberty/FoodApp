@@ -99,7 +99,7 @@ InvModal.addEventListener("close", () => {
 	IngredientForm.reset();
 });
 
-InvModal.addEventListener("submit", async (e) => {
+IngredientForm.addEventListener("submit", async (e) => {
 	e.preventDefault();
 
 	const invName = IngredientName.value;

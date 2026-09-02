@@ -246,6 +246,100 @@
 				</article>
 			</dialog>
 
+			<dialog id="SideModal">
+				<article>
+					<header>
+						<button
+							aria-label="Close"
+							rel="prev"
+							class="CloseModalBtn"
+						></button>
+
+						<h3>Add Side</h3>
+					</header>
+
+					<form id="SideForm">
+						<label for="SideName">Side Name</label>
+
+						<input
+							type="text"
+							id="SideName"
+							name="name"
+							autocomplete="on"
+							placeholder="Enter a side name..."
+							required
+						/>
+
+						<label for="SideCategoryDropdown">Category</label>
+
+						<details class="dropdown" id="SideCategoryDropdown">
+							<summary id="SideCategorySummary">Select categories...</summary>
+
+							<ul>
+								<li>
+									<label>
+										<input
+											type="checkbox"
+											name="sideCategory"
+											value="Morning"
+										/>
+
+										Morning
+									</label>
+								</li>
+
+								<li>
+									<label>
+										<input
+											type="checkbox"
+											name="sideCategory"
+											value="Afternoon"
+										/>
+
+										Afternoon
+									</label>
+								</li>
+
+								<li>
+									<label>
+										<input type="checkbox" name="sideCategory" value="Snacky" />
+
+										Snacky
+									</label>
+								</li>
+
+								<li>
+									<label>
+										<input
+											type="checkbox"
+											name="sideCategory"
+											value="Dessert"
+										/>
+
+										Dessert
+									</label>
+								</li>
+							</ul>
+						</details>
+
+						<label>
+							<input
+								name="allergenToggle"
+								type="checkbox"
+								role="switch"
+								id="SideAllergenToggle"
+							/>
+
+							This is an allergen!
+						</label>
+
+						<footer>
+							<button type="submit" id="saveSideBtn">Save Side</button>
+						</footer>
+					</form>
+				</article>
+			</dialog>
+
 			<dialog id="CourseCreatorModal">
 				<article>
 					<header>
@@ -315,12 +409,9 @@
 								</label>
 							</div>
 
-
 							<label for="CourseTime">Time</label>
 							<input type="time" id="CourseTime" name="time" required />
 						</div>
-
-
 					</form>
 
 					<footer>
