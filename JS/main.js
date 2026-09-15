@@ -1,38 +1,3 @@
-// Service Worker Registration
-if ("serviceWorker" in navigator) {
-	window.addEventListener("load", () => {
-		const isLivePreview =
-			window.parent !== window ||
-			window.location.port === "3000" ||
-			window.location.pathname.includes("___vscode_livepreview");
-
-		if (isLivePreview) {
-			console.log(
-				"[Service Worker] Registration bypassed (VS Code Live Preview detected)",
-			);
-
-			navigator.serviceWorker.getRegistrations().then((registrations) => {
-				for (const registration of registrations) {
-					registration.unregister();
-				}
-			});
-			return;
-		}
-
-		navigator.serviceWorker
-			.register("/FoodApp/sw.js")
-			.then((registration) => {
-				console.log(
-					"[Service Worker] Registered with scope:",
-					registration.scope,
-				);
-			})
-			.catch((error) => {
-				console.error("[Service Worker] Registration failed:", error);
-			});
-	});
-}
-
 // Global App State
 let currentSelectedMeals = "";
 let currentView = null;
@@ -134,7 +99,11 @@ InvBtn.addEventListener("click", () => {
 	renderInv();
 });
 
-CourseBtn.addEventListener("click", () => showView(CourseView));
+CourseBtn.addEventListener("click", () => {
+    showView(CourseView);
+	renderCourseCalendar();
+});
+
 SettingsBtn.addEventListener("click", () => showSettings());
 
 MealCatContainer.addEventListener("click", async (e) => {
@@ -199,6 +168,8 @@ InvView.addEventListener("change", async (e) => {
 		}
 	}
 });
+
+
 
 function addBtnAction(view) {
 	switch (view) {

@@ -239,15 +239,19 @@ ChooseSidesContainer.addEventListener("click", async (e) => {
 	const card = e.target.closest("article");
 	if (!card) return;
 
-	const sideId = Number(card.querySelector(".SidesCheckBox").dataset.sideId);
 	const target = e.target;
 
 	if (target.classList.contains("editBtn")) {
+		const sideId = Number(card.querySelector(".SidesCheckBox").dataset.sideId);
 		const side = await db.sides.get(sideId);
 		if (!side) return;
 
 		openEditSideModal(side);
-	} else if (target.classList.contains("deleteBtn")) {
+		return;
+	}
+
+	if (target.classList.contains("deleteBtn")) {
+		const sideId = Number(card.querySelector(".SidesCheckBox").dataset.sideId);
 		const sideName =
 			card.querySelector(".card-title")?.textContent || "this side";
 		if (!sideId) return console.error("Invalid side ID:", card.dataset.sideId);
@@ -260,6 +264,14 @@ ChooseSidesContainer.addEventListener("click", async (e) => {
 				console.error("Failed to delete side from Dexie:", err);
 			}
 		}
+		return;
+	}
+
+	// Toggle card checkbox if clicked anywhere else
+	const SideCheckbox = card.querySelector(".SidesCheckBox");
+	if (SideCheckbox && target !== SideCheckbox) {
+		SideCheckbox.checked = !SideCheckbox.checked;
+		SideCheckbox.dispatchEvent(new Event("change"));
 	}
 });
 

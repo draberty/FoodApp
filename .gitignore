@@ -1,0 +1,2 @@
+.vscode/ # Ignore VScode Workspace settings
+dev/  # Ignore the dev test bed folder.

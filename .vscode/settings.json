@@ -1,4 +1,5 @@
 {
-    "workbench.colorTheme": "Abyss",
-    "prettier.useTabs": true
+    "workbench.colorTheme": "Dark 2026",
+    "prettier.useTabs": true,
+    "workbench.iconTheme": "vscode-modern-icons"
 }

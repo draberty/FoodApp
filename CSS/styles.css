@@ -126,6 +126,10 @@ details.dropdown summary::marker {
 	padding: 0.5rem 0.75rem;
 }
 
+#calender-actions {
+	margin-bottom: var(--pico-spacing);
+}
+
 /* 3. INGREDIENTS & FORM CONTROLS */
 
 .ingredient-chip-container {
@@ -244,3 +248,4 @@ textarea {
 .SidesCheckBox {
 	aspect-ratio: 1/1;
 }
+	

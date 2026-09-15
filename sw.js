@@ -16,6 +16,8 @@ const ASSETS_TO_CACHE = [
 	"JS/main.js",
 	"JS/settingsManager.js",
 	"JS/assembleCourse.js",
+	"JS/CourseCalendar.js",
+	"JS/globals.js"
 ];
 
 // Install Event

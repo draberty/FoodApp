@@ -9,7 +9,8 @@
 		<link rel="stylesheet" href="./Libs/pico.min.css" />
 		<link rel="stylesheet" href="./Libs/pico.colors.min.css" />
 		<link rel="stylesheet" href="./CSS/styles.css" />
-		<title>Food Prep Menu</title>
+		<link rel="icon" type="image" href="/assets/food-192.png" />
+		<title>Meal Tracker</title>
 	</head>
 	<body>
 		<main class="container-fluid">
@@ -71,7 +72,7 @@
 					<p>Here you view your courses for the week!</p>
 				</hgroup>
 
-				<div id="CoursePlannerConatiner">Something is on the way!</div>
+				<div id="CoursePlannerContainer"></div>
 			</section>
 
 			<dialog id="MealFormModal">
@@ -411,8 +412,15 @@
 								</label>
 							</div>
 
-							<label for="CourseTime">Time</label>
-							<input type="time" id="CourseTime" name="time" required />
+							<label for="CourseTime"
+								>Choose a start date and time of meal</label
+							>
+							<input
+								type="datetime-local"
+								id="CourseDate"
+								name="time"
+								required
+							/>
 						</div>
 					</form>
 
@@ -493,6 +501,7 @@
 					</section>
 				</article>
 			</dialog>
+
 		</main>
 
 		<div class="utilBar">
@@ -510,11 +519,13 @@
 			</div>
 		</div>
 
+		<script src="./JS/globals.js"></script>
 		<script src="./Libs/dexie.min.js"></script>
 		<script src="./JS/db.js"></script>
 		<script src="./JS/inventoryManager.js"></script>
 		<script src="./JS/mealsManager.js"></script>
 		<script src="./JS/assembleCourse.js"></script>
+		<script src="./JS/CourseCalendar.js"></script>
 		<script src="./JS/settingsManager.js"></script>
 		<script src="./JS/main.js"></script>
 	</body>
