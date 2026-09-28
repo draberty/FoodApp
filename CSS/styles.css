@@ -128,6 +128,14 @@ details.dropdown summary::marker {
 
 #calender-actions {
 	margin-bottom: var(--pico-spacing);
+	z-index: 1002;
+	position: sticky;
+	top: 0.5rem;
+}
+
+#calender-actions.is-stuck {
+	background-color: #991b1b;
+	padding: 0.5rem;
 }
 
 /* 3. INGREDIENTS & FORM CONTROLS */
@@ -248,4 +256,21 @@ textarea {
 .SidesCheckBox {
 	aspect-ratio: 1/1;
 }
-	
+
+#CoursePlannerContainer .grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 1rem;
+}
+
+.Morning {
+	margin-bottom: var(--pico-spacing);
+}
+
+.Noon {
+	margin-bottom: var(--pico-spacing);
+}
+
+.Afternoon {
+	margin-bottom: var(--pico-spacing);
+}
