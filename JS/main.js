@@ -100,7 +100,7 @@ InvBtn.addEventListener("click", () => {
 });
 
 CourseBtn.addEventListener("click", () => {
-    showView(CourseView);
+	showView(CourseView);
 	renderCourseCalendar();
 });
 
@@ -119,7 +119,7 @@ MealCatContainer.addEventListener("click", async (e) => {
 		openEditMealModal(mealId);
 	} else if (target.classList.contains("deleteBtn")) {
 		const mealName =
-			card.querySelector(".meal-title")?.textContent || "this meal";
+			card.querySelector(".card-title")?.textContent || "this meal";
 		if (!mealId) return console.error("Invalid meal ID:", card.dataset.mealId);
 
 		if (confirm(`Are you sure you want to delete "${mealName}"?`)) {
@@ -168,8 +168,6 @@ InvView.addEventListener("change", async (e) => {
 		}
 	}
 });
-
-
 
 function addBtnAction(view) {
 	switch (view) {

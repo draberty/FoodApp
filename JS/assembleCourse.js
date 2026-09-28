@@ -6,7 +6,9 @@ const CourseCreatorModal = $("CourseCreatorModal"),
 	CourseMeal = $("CourseMeal"),
 	CourseMealId = $("CourseMealId"),
 	CourseSides = $("CourseSides"),
-	CourseDate = $("CourseDate"),
+	CourseDateStart = $("CourseStartDate"),
+	CourseDateEnd = $("CourseEndDate"),
+	CourseDateTime = $("CourseTime"),
 	SideModal = $("SideModal"),
 	SideForm = $("SideForm"),
 	SideName = $("SideName"),
@@ -204,7 +206,7 @@ CourseCreatorModal.addEventListener("submit", async (e) => {
 		const selectedDays = Array.from(
 			document.querySelectorAll('input[name="days"]:checked'),
 		).map((checkbox) => checkbox.value);
-		const courseDate = CourseDate.value;
+		const courseDate = [CourseDateStart.value, CourseDateEnd.value, CourseDateTime.value];
 
 		const courseData = {
 			name: courseName,

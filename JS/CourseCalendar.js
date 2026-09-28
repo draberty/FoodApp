@@ -9,8 +9,35 @@ async function populateCourses() {
 	const meals = await db.meals.toArray();
 	const sides = await db.sides.toArray();
 
+	const calendarStartDate = new Date();
+	calendarStartDate.setDate(calendarStartDate.getDate() + currentWeek * 7);
+	const firstDayOfWeekIndex =
+		calendarStartDate.getDate() - calendarStartDate.getDay();
+
+	const viewStart = new Date(
+		calendarStartDate.getFullYear(),
+		calendarStartDate.getMonth(),
+		firstDayOfWeekIndex,
+	);
+	const viewEnd = new Date(
+		calendarStartDate.getFullYear(),
+		calendarStartDate.getMonth(),
+		firstDayOfWeekIndex + 6,
+	);
+
 	courses.forEach((course) => {
-		const { timeString, timeSlot } = parseTimeSlot(course.date);
+		if (!Array.isArray(course.date) || course.date.length < 3) return;
+
+		const [startDateStr, endDateStr, mealTimeString] = course.date;
+
+		const courseStart = new Date(startDateStr);
+		const courseEnd = new Date(endDateStr);
+
+		if (courseEnd < viewStart || courseStart > viewEnd) {
+			return;
+		}
+
+		const { timeString, timeSlot } = parseTimeSlot(mealTimeString);
 		const currentSlot = course.timeslot || timeSlot;
 
 		const matchedMeal = meals.find((m) => m.id === course.mealId);
@@ -53,28 +80,26 @@ async function populateCourses() {
 	});
 }
 
-function parseTimeSlot(dateToParse) {
-	const date = new Date(dateToParse);
-	const hours = date.getHours();
-	const mins = date.getMinutes();
+function parseTimeSlot(timeStringInput) {
+    const [hourStr, minStr] = timeStringInput.split(":");
+    const hours = parseInt(hourStr, 10);
+    
+    const timeString = `${hours}:${minStr}`;
 
-	const formattedMinutes = mins.toString().padStart(2, "0");
-	const timeString = `${hours}:${formattedMinutes}`;
+    let timeSlot = "Noon";
+    switch (true) {
+        case hours < 11:
+            timeSlot = "Morning";
+            break;
+        case hours > 16:
+            timeSlot = "Afternoon";
+            break;
+        default:
+            timeSlot = "Noon";
+            break;
+    }
 
-	let timeSlot = "Noon";
-	switch (true) {
-		case hours < 11:
-			timeSlot = "Morning";
-			break;
-		case hours > 16:
-			timeSlot = "Afternoon";
-			break;
-		default:
-			timeSlot = "Noon";
-			break;
-	}
-
-	return { timeString, timeSlot };
+    return { timeString, timeSlot };
 }
 
 async function renderCourseCalendar() {

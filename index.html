@@ -412,15 +412,12 @@
 								</label>
 							</div>
 
-							<label for="CourseTime"
-								>Choose a start date and time of meal</label
-							>
-							<input
-								type="datetime-local"
-								id="CourseDate"
-								name="time"
-								required
-							/>
+							<label for="CourseTime">Choose a start, end, and time: </label>
+							<div class="card-actions">
+								<input type="date" id="CourseStartDate" name="start" required />
+								<input type="date" id="CourseEndDate" name="end" required />
+							</div>
+							<input type="time" id="CourseTime" name="time" required />
 						</div>
 					</form>
 

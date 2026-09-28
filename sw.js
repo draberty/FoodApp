@@ -16,7 +16,7 @@ const ASSETS_TO_CACHE = [
 	"JS/main.js",
 	"JS/settingsManager.js",
 	"JS/assembleCourse.js",
-	"JS/CourseCalendar.js",
+	"JS/courseCalendar.js",
 	"JS/globals.js"
 ];
 
