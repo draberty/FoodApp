@@ -130,16 +130,6 @@ async function renderCourseCalendar() {
 	CoursePlannerContainer.appendChild(calendarCont);
 
 	await populateCourses();
-
-	const observer = new IntersectionObserver(
-		([entry]) => {
-			const isStuck =
-				entry.boundingClientRect.top <= 0 && entry.intersectionRatio < 1;
-			courseControls.classList.toggle("is-stuck", isStuck);
-		},
-		{ threshold: [1] },
-	);
-	observer.observe(courseControls);
 }
 
 function changeWeek(val) {

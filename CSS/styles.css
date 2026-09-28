@@ -126,18 +126,6 @@ details.dropdown summary::marker {
 	padding: 0.5rem 0.75rem;
 }
 
-#calender-actions {
-	margin-bottom: var(--pico-spacing);
-	z-index: 1002;
-	position: sticky;
-	top: 0.5rem;
-}
-
-#calender-actions.is-stuck {
-	background-color: #991b1b;
-	padding: 0.5rem;
-}
-
 /* 3. INGREDIENTS & FORM CONTROLS */
 
 .ingredient-chip-container {
@@ -273,4 +261,14 @@ textarea {
 
 .Afternoon {
 	margin-bottom: var(--pico-spacing);
+}
+
+#calender-actions {
+	margin-bottom: var(--pico-spacing);
+	z-index: 1002;
+	position: sticky;
+	margin: -1rem 0 0 0;
+	top: 0;
+	padding: 1rem 0;
+	background-color:  var(--pico-background-color);
 }
