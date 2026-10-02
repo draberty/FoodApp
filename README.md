@@ -1,6 +1,6 @@
 # WORK IN PROGRESS
 
-⚠️Data may be deleted at any moment as development continues. This includes meals, sides, inventory, course, and etc! ⚠️
+⚠️ Data may be deleted at any moment as development continues. This includes meals, sides, inventory, course, and etc! ⚠️
 Export Your Data Regularly!
 
 A offline first Meal planner and Menu tracker.
